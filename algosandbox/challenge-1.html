@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge #01 | Parsons Sandbox</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a1a;
+            background-image: radial-gradient(at 0% 0%, rgba(180, 83, 9, 0.04) 0, transparent 50%);
+        }
+        .code-font {
+            font-family: 'Fira Code', 'Consolas', monospace;
+        }
+        /* Double-Sized Coin Particle Animation Styles */
+        .coin-particle {
+            position: fixed;
+            pointer-events: none;
+            font-size: 48px;
+            z-index: 100;
+            animation: flyAway 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+        @keyframes flyAway {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tw-x), var(--tw-y)) rotate(var(--tw-r)) scale(0);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="text-neutral-200 min-h-screen flex flex-col justify-between selection:bg-amber-700 selection:text-white relative overflow-x-hidden">
+
+    <header class="border-b border-neutral-800 bg-[#212121] px-6 py-4 shadow-md">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <div class="flex items-center gap-2">
+                    <a href="challenges-hub.html" class="text-xs font-bold text-neutral-400 hover:text-amber-500 transition mr-2">← HUB</a>
+                    <span class="h-2 w-2 rounded-full bg-amber-600"></span>
+                    <h1 class="text-lg font-bold tracking-tight text-neutral-100">
+                        GCSE Computer Science <span class="text-amber-500 font-medium">Parsons Sandbox</span>
+                    </h1>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <div class="bg-[#2a2a2a] border border-neutral-800 px-4 py-2 rounded-lg flex items-center gap-4 text-xs">
+                    <div>
+                        <span class="text-neutral-400 block text-[10px] uppercase font-bold tracking-wider">CHALLENGE</span>
+                        <span class="font-semibold text-neutral-200 code-font">#01_input.py</span>
+                    </div>
+                    <div class="h-8 w-[1px] bg-neutral-800"></div>
+                    <div>
+                        <span class="text-neutral-400 block text-[10px] uppercase font-bold tracking-wider">STREAK SCORE</span>
+                        <span id="score-display" class="font-bold text-amber-500 text-sm code-font">000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <section class="lg:col-span-4 flex flex-col gap-4">
+            <div class="bg-[#212121] border border-neutral-800 rounded-xl p-5 shadow-sm">
+                <h2 class="text-[10px] font-bold uppercase tracking-widest text-amber-500 mb-2">Tier 1: Foundations</h2>
+                <h3 class="text-lg font-semibold text-neutral-100 mb-3">Inputting Details</h3>
+                <p class="text-sm text-neutral-400 leading-relaxed">
+                    Construct a program that asks the user to input their name, their age, and their favorite color. The program must capture these values into separate variables and output them back cleanly. 
+                </p>
+                <div class="mt-4 pt-4 border-t border-neutral-800/60 text-xs text-neutral-500 space-y-1">
+                    <span class="text-amber-600 font-bold block uppercase tracking-wider text-[10px]">Syntax Requirements:</span>
+                    <p>• Correct sequence order applies (Inputs before Outputs).</p>
+                    <p>• No indentations are needed for this simple sequence puzzle.</p>
+                </div>
+            </div>
+
+            <div class="bg-[#212121]/50 border border-neutral-800/60 rounded-xl p-5 text-[11px] text-neutral-400 space-y-2">
+                <h4 class="font-semibold text-neutral-300 uppercase tracking-wider">Sandbox Hotkeys</h4>
+                <p>Drag blocks up or down. Dropping a block perfectly into its correct algorithmic line slot will emit a system nudge verification audio blip.</p>
+            </div>
+        </section>
+
+        <section class="lg:col-span-8 flex flex-col gap-4">
+            <div class="bg-[#212121] border border-neutral-800 rounded-t-xl px-4 py-3 flex justify-between items-center shadow-sm">
+                <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-neutral-700"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-neutral-700"></div>
+                    <span class="text-xs text-neutral-500 code-font ml-2">student_attempt.py</span>
+                </div>
+                <button onclick="resetChallenge()" class="text-xs text-neutral-400 hover:text-amber-500 transition-colors">
+                    Reset Workspace
+                </button>
+            </div>
+
+            <div id="parsons-workspace" class="bg-[#1e1e1e] border-x border-b border-neutral-800 rounded-b-xl p-4 min-h-[360px] flex flex-col gap-2 shadow-inner" aria-label="Code assembly area">
+                </div>
+
+            <div id="feedback-panel" class="hidden rounded-xl p-4 border text-sm transition-all duration-300 animate-fade-in"></div>
+
+            <div class="flex items-center justify-end gap-4 mt-2">
+                <button id="action-btn" onclick="checkAnswer()" class="w-full sm:w-auto px-6 py-3 bg-amber-600 hover:bg-amber-700 text-neutral-900 font-bold rounded-xl shadow-md transition-all cursor-pointer tracking-wide text-xs uppercase">
+                    Verify Code Alignment
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-neutral-800 bg-[#1a1a1a] py-4 text-center text-xs text-neutral-500 code-font">
+        OCR CS REVISION ZONE | GAMIFIED PARSONS SANDBOX ENGINE
+    </footer>
+
+    <script>
+        // Data Schema Definition Model
+        const challengeData = {
+            correctOrder: [
+                { text: "name = input(\"Enter name: \")", indent: 0 },
+                { text: "age = input(\"Enter age: \")", indent: 0 },
+                { text: "color = input(\"Enter favorite color: \")", indent: 0 },
+                { text: "print(\"User verification successful.\")", indent: 0 },
+                { text: "print(name + \" is \" + age + \" and loves \" + color)", indent: 0 }
+            ],
+            scrambledLines: [
+                { id: "line-b3", text: "print(name + \" is \" + age + \" and loves \" + color)" },
+                { id: "line-b1", text: "age = input(\"Enter age: \")" },
+                { id: "line-b4", text: "print(\"User verification successful.\")" },
+                { id: "line-b0", text: "name = input(\"Enter name: \")" },
+                { id: "line-b2", text: "color = input(\"Enter favorite color: \")" }
+            ]
+        };
+
+        let activeDraggedElement = null;
+        let hasScoredThisSession = false; 
+        let userScore = parseInt(localStorage.getItem('parsons_streak_score') || '0', 10);
+
+        // Sound Synthesizer Utility (Web Audio API)
+        function playAudioTone(frequency, duration, type = 'sine', startTimeOffset = 0) {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                oscillator.type = type;
+                oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime + startTimeOffset);
+                
+                gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime + startTimeOffset);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + startTimeOffset + duration);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                oscillator.start(audioCtx.currentTime + startTimeOffset);
+                oscillator.stop(audioCtx.currentTime + startTimeOffset + duration);
+            } catch (e) {
+                console.log("Audio play blocked.");
+            }
+        }
+
+        function playNudgeSound() {
+            playAudioTone(587.33, 0.08, 'triangle'); 
+        }
+
+        // Amped Up Retro Arcade Slot Machine Cash Splurge Chime
+        function playCashSplurgeSound() {
+            const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98, 2093.00]; // Arpeggiated C Major chords moving up octaves
+            notes.forEach((freq, index) => {
+                playAudioTone(freq, 0.15, 'square', index * 0.06);
+            });
+        }
+
+        // Massive Gamified Coin Burst Engine
+        function triggerCoinSplash() {
+            const coinCount = 40;
+            const container = document.body;
+
+            for (let i = 0; i < coinCount; i++) {
+                const coin = document.createElement('div');
+                coin.className = 'coin-particle';
+                coin.innerHTML = '🪙';
+                
+                coin.style.left = '50vw';
+                coin.style.top = '40vh';
+
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 150 + Math.random() * 350; 
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance - 100; 
+                const rotation = Math.random() * 360 + 180;
+
+                coin.style.setProperty('--tw-x', `${x}px`);
+                coin.style.setProperty('--tw-y', `${y}px`);
+                coin.style.setProperty('--tw-r', `${rotation}deg`);
+
+                container.appendChild(coin);
+                coin.addEventListener('animationend', () => coin.remove());
+            }
+        }
+
+        function updateScoreDisplay() {
+            document.getElementById('score-display').innerText = String(userScore).padStart(3, '0');
+            localStorage.setItem('parsons_streak_score', userScore);
+        }
+
+        // Initialize Core Canvas Container Elements
+        function initWorkspace() {
+            updateScoreDisplay();
+            
+            // Revert action button properties back to standard state
+            const actionBtn = document.getElementById('action-btn');
+            actionBtn.innerText = "Verify Code Alignment";
+            actionBtn.onclick = checkAnswer;
+            actionBtn.className = "w-full sm:w-auto px-6 py-3 bg-amber-600 hover:bg-amber-700 text-neutral-900 font-bold rounded-xl shadow-md transition-all cursor-pointer tracking-wide text-xs uppercase";
+
+            const workspace = document.getElementById('parsons-workspace');
+            workspace.innerHTML = '';
+
+            challengeData.scrambledLines.forEach(line => {
+                const block = createCodeBlockNode(line.id, line.text);
+                workspace.appendChild(block);
+            });
+
+            setupDragAndDropContext(workspace);
+        }
+
+        function createCodeBlockNode(id, text) {
+            const row = document.createElement('div');
+            row.id = id;
+            row.className = "flex items-center gap-3 p-1 rounded-lg group transition-all duration-150";
+            row.setAttribute("data-indent", "0");
+            
+            row.innerHTML = `
+                <div class="flex items-center gap-1 opacity-20 group-hover:opacity-100 transition-opacity">
+                    <button onclick="changeIndentation('${id}', -1)" class="w-5 h-5 flex items-center justify-center bg-neutral-800 hover:bg-neutral-700 text-neutral-400 rounded cursor-pointer text-xs font-bold">&lsaquo;</button>
+                    <button onclick="changeIndentation('${id}', 1)" class="w-5 h-5 flex items-center justify-center bg-neutral-800 hover:bg-neutral-700 text-neutral-400 rounded cursor-pointer text-xs font-bold">&rsaquo;</button>
+                </div>
+
+                <div draggable="true" class="flex-grow flex items-center bg-[#262626] border border-neutral-800 text-amber-100 rounded-lg py-2.5 px-4 shadow-sm cursor-grab active:cursor-grabbing transition-all border-l-4 border-l-amber-600/20 hover:border-l-amber-500">
+                    <span class="text-neutral-600 select-none mr-3 text-xs">☰</span>
+                    <span class="code-font text-xs tracking-wide whitespace-pre select-none">${text}</span>
+                </div>
+            `;
+            return row;
+        }
+
+        function changeIndentation(id, direction) {
+            const element = document.getElementById(id);
+            let currentIndent = parseInt(element.getAttribute('data-indent'), 10);
+            currentIndent = Math.max(0, Math.min(4, currentIndent + direction));
+            element.setAttribute('data-indent', currentIndent);
+            element.style.paddingLeft = `${currentIndent * 1.5}rem`;
+            
+            checkDropPlacementMatch(element);
+        }
+
+        function checkDropPlacementMatch(element) {
+            const container = document.getElementById('parsons-workspace');
+            const index = Array.from(container.children).indexOf(element);
+            const currentText = element.querySelector('.code-font').innerText;
+            const currentIndent = parseInt(element.getAttribute('data-indent'), 10);
+
+            if (challengeData.correctOrder[index] && 
+                challengeData.correctOrder[index].text === currentText && 
+                challengeData.correctOrder[index].indent === currentIndent) {
+                playNudgeSound(); 
+            }
+        }
+
+        function setupDragAndDropContext(container) {
+            container.addEventListener('dragstart', (e) => {
+                const targetRow = e.target.closest('[draggable="true"]')?.parentElement;
+                if (!targetRow) return;
+                activeDraggedElement = targetRow;
+                targetRow.classList.add('opacity-30');
+            });
+
+            container.addEventListener('dragend', (e) => {
+                if (!activeDraggedElement) return;
+                activeDraggedElement.classList.remove('opacity-30');
+                
+                checkDropPlacementMatch(activeDraggedElement);
+                activeDraggedElement = null;
+            });
+
+            container.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                const targetRow = e.target.closest('[id^="line-"]');
+                if (!targetRow || targetRow === activeDraggedElement) return;
+
+                const bounding = targetRow.getBoundingClientRect();
+                const offset = e.clientY - bounding.top - bounding.height / 2;
+                
+                if (offset > 0) {
+                    targetRow.after(activeDraggedElement);
+                } else {
+                    targetRow.before(activeDraggedElement);
+                }
+            });
+        }
+
+        function checkAnswer() {
+            const workspace = document.getElementById('parsons-workspace');
+            const constructedRows = Array.from(workspace.children);
+            const expected = challengeData.correctOrder;
+            
+            let isPerfect = true;
+
+            constructedRows.forEach((row, idx) => {
+                const codeText = row.querySelector('.code-font').innerText;
+                const currentIndent = parseInt(row.getAttribute('data-indent'), 10);
+                const innerBlock = row.querySelector('div[draggable="true"]');
+                const targetMatch = expected[idx];
+
+                if (targetMatch && targetMatch.text === codeText && targetMatch.indent === currentIndent) {
+                    innerBlock.className = innerBlock.className.replace(/border-neutral-800/g, 'border-green-600') + ' bg-green-950/10';
+                } else {
+                    isPerfect = false;
+                    innerBlock.className = innerBlock.className.replace(/border-neutral-800/g, 'border-red-600') + ' bg-red-950/10';
+                }
+            });
+
+            const panel = document.getElementById('feedback-panel');
+            panel.classList.remove('hidden');
+
+            if (isPerfect && constructedRows.length === expected.length) {
+                if (!hasScoredThisSession) {
+                    userScore += 100;
+                    hasScoredThisSession = true; 
+                    updateScoreDisplay();
+                }
+                
+                playCashSplurgeSound(); // High impact casino sound design activation
+                triggerCoinSplash();
+
+                // Dynamic Action Button Transformation
+                const actionBtn = document.getElementById('action-btn');
+                actionBtn.innerText = "Return to Challenge Hub";
+                actionBtn.onclick = () => { window.location.href = 'challenges-hub.html'; };
+                actionBtn.className = "w-full sm:w-auto px-6 py-3 bg-green-600 hover:bg-green-700 text-neutral-900 font-bold rounded-xl shadow-md transition-all cursor-pointer tracking-wide text-xs uppercase animate-bounce mt-2 sm:mt-0";
+
+                panel.className = "rounded-xl p-4 border border-green-800 bg-green-950/20 text-green-400 text-xs";
+                panel.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <span class="text-base">🏆</span>
+                        <div>
+                            <strong class="font-bold text-white block mb-0.5">Perfect Logic Compilation Sequence Match!</strong>
+                            Sequence structural logic verified successfully. Variables are cleanly declared via input methods before evaluation operations occur.
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Penalty Reset State
+                userScore = 0; 
+                hasScoredThisSession = false;
+                updateScoreDisplay();
+                playAudioTone(220, 0.35, 'sawtooth'); 
+
+                panel.className = "rounded-xl p-4 border border-red-900/60 bg-red-950/20 text-red-400 text-xs";
+                panel.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <span class="text-base">❌</span>
+                        <div>
+                            <strong class="font-bold text-white block mb-0.5">Logic Structure Verification Error. Streak Reset!</strong>
+                            Variables must be populated at runtime before they can be printed out. Rearrange line dependencies and check again.
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function resetChallenge() {
+            hasScoredThisSession = false; 
+            initWorkspace();
+            document.getElementById('feedback-panel').classList.add('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', initWorkspace);
+    </script>
+</body>
+</html>

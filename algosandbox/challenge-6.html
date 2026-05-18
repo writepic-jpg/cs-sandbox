@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge #06 | Parsons Sandbox</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #1a1a1a; background-image: radial-gradient(at 0% 0%, rgba(180, 83, 9, 0.04) 0, transparent 50%); }
+        .code-font { font-family: 'Fira Code', 'Consolas', monospace; }
+        .coin-particle { position: fixed; pointer-events: none; font-size: 48px; z-index: 100; animation: flyAway 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        @keyframes flyAway { 0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; } 100% { transform: translate(var(--tw-x), var(--tw-y)) rotate(var(--tw-r)) scale(0); opacity: 0; } }
+    </style>
+</head>
+<body class="text-neutral-200 min-h-screen flex flex-col justify-between selection:bg-amber-700 selection:text-white relative overflow-x-hidden">
+    <header class="border-b border-neutral-800 bg-[#212121] px-6 py-4 shadow-md">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="flex items-center gap-2">
+                <a href="challenges-hub.html" class="text-xs font-bold text-neutral-400 hover:text-amber-500 transition mr-2">← HUB</a>
+                <span class="h-2 w-2 rounded-full bg-amber-600"></span>
+                <h1 class="text-lg font-bold tracking-tight text-neutral-100">OCR CS <span class="text-amber-500 font-medium">Parsons Sandbox</span></h1>
+            </div>
+            <div class="bg-[#2a2a2a] border border-neutral-800 px-4 py-2 rounded-lg flex items-center gap-4 text-xs">
+                <div><span class="text-neutral-400 block text-[10px] uppercase font-bold tracking-wider">CHALLENGE</span><span class="font-semibold text-neutral-200 code-font">#06_maths.py</span></div>
+                <div class="h-8 w-[1px] bg-neutral-800"></div>
+                <div><span class="text-neutral-400 block text-[10px] uppercase font-bold tracking-wider">STREAK SCORE</span><span id="score-display" class="font-bold text-amber-500 text-sm code-font">000</span></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <section class="lg:col-span-4 flex flex-col gap-4">
+            <div class="bg-[#212121] border border-neutral-800 rounded-xl p-5 shadow-sm">
+                <h2 class="text-[10px] font-bold uppercase tracking-widest text-amber-500 mb-2">Tier 1: Foundations</h2>
+                <h3 class="text-lg font-semibold text-neutral-100 mb-3">Sum and Product</h3>
+                <p class="text-sm text-neutral-400 leading-relaxed">Inputs two standalone digits, calculates their sum addition, then evaluates their arithmetic multiplication product, outputting both total metrics sequentially.</p>
+            </div>
+        </section>
+        <section class="lg:col-span-8 flex flex-col gap-4">
+            <div class="bg-[#212121] border border-neutral-800 rounded-t-xl px-4 py-3 flex justify-between items-center shadow-sm">
+                <span class="text-xs text-neutral-500 code-font">student_attempt.py</span>
+                <button onclick="resetChallenge()" class="text-xs text-neutral-400 hover:text-amber-500 transition-colors">Reset Workspace</button>
+            </div>
+            <div id="parsons-workspace" class="bg-[#1e1e1e] border-x border-b border-neutral-800 rounded-b-xl p-4 min-h-[300px] flex flex-col gap-2 shadow-inner"></div>
+            <div id="feedback-panel" class="hidden rounded-xl p-4 border text-sm transition-all duration-300"></div>
+            <div class="flex items-center justify-end gap-4 mt-2">
+                <button id="action-btn" onclick="checkAnswer()" class="w-full sm:w-auto px-6 py-3 bg-amber-600 hover:bg-amber-700 text-neutral-900 font-bold rounded-xl text-xs uppercase tracking-wide cursor-pointer">Verify Code Alignment</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-neutral-800 bg-[#1a1a1a] py-4 text-center text-xs text-neutral-500 code-font">OCR CS REVISION ZONE</footer>
+
+    <script>
+        const challengeData = {
+            correctOrder: [
+                { text: "v1 = int(input(\"First digit: \"))", indent: 0 },
+                { text: "v2 = int(input(\"Second digit: \"))", indent: 0 },
+                { text: "total_sum = v1 + v2", indent: 0 },
+                { text: "total_prod = v1 * v2", indent: 0 },
+                { text: "print(total_sum)", indent: 0 },
+                { text: "print(total_prod)", indent: 0 }
+            ],
+            scrambledLines: [
+                { id: "l6-b3", text: "total_prod = v1 * v2" },
+                { id: "l6-b0", text: "v1 = int(input(\"First digit: \"))" },
+                { id: "l6-b4", text: "print(total_sum)" },
+                { id: "l6-b2", text: "total_sum = v1 + v2" },
+                { id: "l6-b5", text: "print(total_prod)" },
+                { id: "l6-b1", text: "v2 = int(input(\"Second digit: \"))" }
+            ]
+        };
+        let activeDraggedElement = null, hasScoredThisSession = false, userScore = parseInt(localStorage.getItem('parsons_streak_score') || '0', 10);
+        function playAudioTone(f, d, t='sine', s=0) { try { const ctx = new(window.AudioContext||window.webkitAudioContext)(); const o = ctx.createOscillator(); const g = ctx.createGain(); o.type = t; o.frequency.setValueAtTime(f, ctx.currentTime+s); g.gain.setValueAtTime(0.15, ctx.currentTime+s); g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+s+d); o.connect(g); g.connect(ctx.destination); o.start(ctx.currentTime+s); o.stop(ctx.currentTime+s+d); } catch(e){} }
+        function playNudgeSound() { playAudioTone(587.33, 0.08, 'triangle'); }
+        function playCashSplurgeSound() { [523.25, 659.25, 783.99, 1046.50, 1318.51].forEach((freq, idx) => playAudioTone(freq, 0.15, 'square', idx*0.06)); }
+        function triggerCoinSplash() { const container = document.body; for (let i=0; i<30; i++) { const coin = document.createElement('div'); coin.className = 'coin-particle'; coin.innerHTML = '🪙'; coin.style.left = '50vw'; coin.style.top = '40vh'; const a = Math.random()*Math.PI*2, dist = 120+Math.random()*250, x = Math.cos(a)*dist, y = Math.sin(a)*dist-60, r = Math.random()*360+180; coin.style.setProperty('--tw-x', `${x}px`); coin.style.setProperty('--tw-y', `${y}px`); coin.style.setProperty('--tw-r', `${r}deg`); container.appendChild(coin); coin.addEventListener('animationend', () => coin.remove()); } }
+        function updateScoreDisplay() { document.getElementById('score-display').innerText = String(userScore).padStart(3, '0'); localStorage.setItem('parsons_streak_score', userScore); }
+        function initWorkspace() { updateScoreDisplay(); const actionBtn = document.getElementById('action-btn'); actionBtn.innerText = "Verify Code Alignment"; actionBtn.onclick = checkAnswer; actionBtn.className = "w-full sm:w-auto px-6 py-3 bg-amber-600 hover:bg-amber-700 text-neutral-900 font-bold rounded-xl text-xs uppercase tracking-wide cursor-pointer"; const ws = document.getElementById('parsons-workspace'); ws.innerHTML = ''; challengeData.scrambledLines.forEach(line => ws.appendChild(createCodeBlockNode(line.id, line.text))); setupDragAndDropContext(ws); }
+        function resetChallenge() { initWorkspace(); const panel = document.getElementById('feedback-panel'); panel.classList.add('hidden'); }
+        function createCodeBlockNode(id, text) { const row = document.createElement('div'); row.id = id; row.className = "flex items-center gap-3 p-1 rounded-lg group transition-all duration-150"; row.setAttribute("data-indent", "0"); row.innerHTML = `<div class="flex items-center gap-1 opacity-20 group-hover:opacity-100 transition-opacity"><button onclick="changeIndentation('${id}', -1)" class="w-5 h-5 flex items-center justify-center bg-neutral-800 text-neutral-400 rounded text-xs font-bold">&lsaquo;</button><button onclick="changeIndentation('${id}', 1)" class="w-5 h-5 flex items-center justify-center bg-neutral-800 text-neutral-400 rounded text-xs font-bold">&rsaquo;</button></div><div draggable="true" class="flex-grow flex items-center bg-[#262626] border border-neutral-800 text-amber-100 rounded-lg py-2.5 px-4 cursor-grab active:cursor-grabbing border-l-4 border-l-amber-600/20 hover:border-l-amber-500"><span class="text-neutral-600 select-none mr-3 text-xs">☰</span><span class="code-font text-xs whitespace-pre select-none">${text}</span></div>`; return row; }
+        function changeIndentation(id, dir) { const el = document.getElementById(id); let current = Math.max(0, Math.min(4, parseInt(el.getAttribute('data-indent'), 10)+dir)); el.setAttribute('data-indent', current); el.style.paddingLeft = `${current*1.5}rem`; checkDropPlacementMatch(el); }
+        function checkDropPlacementMatch(el) { const idx = Array.from(document.getElementById('parsons-workspace').children).indexOf(el); if (challengeData.correctOrder[idx] && challengeData.correctOrder[idx].text === el.querySelector('.code-font').innerText && challengeData.correctOrder[idx].indent === parseInt(el.getAttribute('data-indent'), 10)) playNudgeSound(); }
+        function setupDragAndDropContext(container) { container.addEventListener('dragstart', (e) => { activeDraggedElement = e.target.closest('[draggable="true"]')?.parentElement; activeDraggedElement?.classList.add('opacity-30'); }); container.addEventListener('dragend', () => { if(!activeDraggedElement) return; activeDraggedElement.classList.remove('opacity-30'); checkDropPlacementMatch(activeDraggedElement); activeDraggedElement = null; }); container.addEventListener('dragover', (e) => { e.preventDefault(); const target = e.target.closest('[id^="l6-"]'); if (!target || target === activeDraggedElement) return; const box = target.getBoundingClientRect(); if (e.clientY - box.top - box.height/2 > 0) target.after(activeDraggedElement); else target.before(activeDraggedElement); }); }
+        function checkAnswer() { const rows = Array.from(document.getElementById('parsons-workspace').children); let isPerfect = true; rows.forEach((row, idx) => { const text = row.querySelector('.code-font').innerText, indent = parseInt(row.getAttribute('data-indent'), 10), inner = row.querySelector('div[draggable="true"]'), match = challengeData.correctOrder[idx]; if (match && match.text === text && match.indent === indent) inner.className = inner.className.replace(/border-neutral-800/g, 'border-green-600') + ' bg-green-950/10'; else { isPerfect = false; inner.className = inner.className.replace(/border-neutral-800/g, 'border-red-600') + ' bg-red-950/10'; } }); const panel = document.getElementById('feedback-panel'); panel.classList.remove('hidden'); if (isPerfect && rows.length === challengeData.correctOrder.length) { if (!hasScoredThisSession) { userScore += 100; hasScoredThisSession = true; updateScoreDisplay(); } playCashSplurgeSound(); triggerCoinSplash(); const btn = document.getElementById('action-btn'); btn.innerText = "Return to Challenge Hub"; btn.onclick = () => window.location.href = 'challenges-hub.html'; btn.className = "w-full sm:w-auto px-6 py-3 bg-green-600 text-neutral-900 font-bold rounded-xl text-xs uppercase tracking-wide cursor-pointer animate-bounce"; panel.className = "rounded-xl p-4 border border-green-800 bg-green-950/20 text-green-400 text-xs"; panel.innerHTML = `<strong>Perfect Sequence Execution!</strong>`; } else { userScore = 0; hasScoredThisSession = false; updateScoreDisplay(); playAudioTone(220, 0.35, 'sawtooth'); panel.className = "rounded-xl p-4 border border-red-900/60 bg-red-950/20 text-red-400 text-xs"; panel.innerHTML = `<strong>Logic Compilation Mismatch.</strong>`; } }
+        document.addEventListener('DOMContentLoaded', initWorkspace);
+    </script>
+</body>
+</html>
