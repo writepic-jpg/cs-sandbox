@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syllabus Hub | 40 Algorithm Puzzles</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght=400;600&family=Inter:wght=400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a1a; /* Dark Charcoal Base */
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(180, 83, 9, 0.06) 0, transparent 50%), 
+                linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px;
+        }
+        .code-font { font-family: 'Fira Code', 'Consolas', monospace; }
+        .hub-card {
+            background: #212121;
+            border: 1px solid #2a2a2a;
+            transition: all 0.2s ease;
+        }
+        .hub-card:hover {
+            border-color: #b45309; /* Ochre highlight border */
+            background: #242424;
+            transform: translateY(-2px);
+        }
+        /* Active structural tier class definitions */
+        .tab-btn.active-tier { 
+            background-color: rgba(180, 83, 9, 0.15); 
+            color: #f59e0b; 
+            border-color: #b45309; 
+        }
+    </style>
+</head>
+<body class="text-neutral-200 min-h-screen flex flex-col justify-between selection:bg-amber-700 selection:text-white">
+
+    <nav class="border-b border-neutral-800 bg-[#212121] px-6 py-4">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-xs font-bold text-neutral-400 hover:text-white transition flex items-center gap-2">
+                ← BACK TO DASHBOARD
+            </a>
+            <span class="font-bold text-xs tracking-widest text-amber-500 uppercase code-font">ALGORITHM MASTER DIRECTORY</span>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-6 py-10 flex-grow w-full space-y-8">
+        
+        <div class="grid grid-cols-3 gap-3 bg-[#212121] p-2 rounded-xl border border-neutral-800 max-w-2xl mx-auto">
+            <button onclick="switchTab('easy')" id="btn-easy" class="tab-btn py-3 rounded-lg font-bold text-xs uppercase tracking-wider border border-transparent transition text-neutral-400 hover:text-neutral-200 cursor-pointer">
+                Easy (Tier 1)
+            </button>
+            <button onclick="switchTab('med')" id="btn-med" class="tab-btn py-3 rounded-lg font-bold text-xs uppercase tracking-wider border border-transparent transition text-neutral-400 hover:text-neutral-200 cursor-pointer">
+                Medium (Tier 2)
+            </button>
+            <button onclick="switchTab('hard')" id="btn-hard" class="tab-btn py-3 rounded-lg font-bold text-xs uppercase tracking-wider border border-transparent transition text-neutral-400 hover:text-neutral-200 cursor-pointer">
+                Hard (Tier 3)
+            </button>
+        </div>
+
+        <div class="text-center space-y-1 py-2">
+            <h2 id="hub-heading" class="text-xl font-bold tracking-tight text-neutral-100">Select a Challenge Container</h2>
+            <p id="hub-subheading" class="text-xs text-neutral-400">Click a difficulty filter above to view targeted exam constructs.</p>
+        </div>
+
+        <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            </div>
+
+    </main>
+
+    <footer class="border-t border-neutral-800 bg-[#1a1a1a] px-6 py-4 text-center text-xs text-neutral-500 code-font">
+        OCR CS REVISION ZONE | 40 CONSTRUCT COMPLIANT BLUEPRINTS
+    </footer>
+
+    <script>
+        const database = {
+            easy: [
+                { num: 1, name: "Inputting Details", desc: "Asks user for name, age, and color inputs.", construct: "Sequence & Variables" },
+                { num: 2, name: "Echo Name", desc: "Takes a first name input and prints it back.", construct: "Basic Sequence" },
+                { num: 3, name: "Separate Names", desc: "Prints surname and first name on separate lines.", construct: "Sequence & Line-Breaks" },
+                { num: 4, name: "Joining Names", desc: "Concatenates first name and surname strings cleanly.", construct: "String Concatenation" },
+                { num: 5, name: "Addition", desc: "Inputs two numeric elements and prints the sum.", construct: "Arithmetic (+)" },
+                { num: 6, name: "Sum and Product", desc: "Calculates total addition and multiplication variations.", construct: "Arithmetic (+, *)" },
+                { num: 7, name: "Average Speed", desc: "Evaluates speed totals from distance and time metrics.", construct: "Arithmetic (/)" },
+                { num: 8, name: "Phone Bill", desc: "Computes fixed charge additions alongside operational usage.", construct: "Multi-step Arithmetic" }
+            ],
+            med: [
+                { num: 9, name: "Personalized Message", desc: "Compares input name to global stored variables.", construct: "Selection (IF/ELSE)" },
+                { num: 10, name: "Alphabet Check", desc: "Verifies basic factual constant validations via user input.", construct: "Selection (IF/ELSE)" },
+                { num: 11, name: "Largest Number", desc: "Identifies and displays the maximum of two inputs.", construct: "Selection (IF)" },
+                { num: 12, name: "Guessing Game (Simple)", desc: "Validates random bounds matching against integer targets.", construct: "Selection & Random" },
+                { num: 13, name: "Holiday Allowance", desc: "Evaluates full-time vs part-time allowance fractions.", construct: "Selection (IF/ELSE)" },
+                { num: 14, name: "Traffic Lights", desc: "Triggers discrete textual actions via explicit color tracking.", construct: "Multi-way (IF/ELIF/ELSE)" },
+                { num: 15, name: "Olympic Values", desc: "Validates inputs across three core conceptual values.", construct: "Multi-way Selection" },
+                { num: 16, name: "TV Feedback", desc: "Evaluates systemic ranges derived from quantitative durations.", construct: "Range Boundary Checks" },
+                { num: 17, name: "Sequence 1 to 10", desc: "Outputs a pure sequence from bounds 1 through 10.", construct: "Iteration (FOR loop)" },
+                { num: 18, name: "Odd Numbers", desc: "Extracts custom step indexes across structural ranges.", construct: "FOR loop / Modulo" },
+                { num: 21, name: "Swimming Discounts", desc: "Applies pricing reductions through nested age limits.", construct: "Complex Multi-way" },
+                { num: 22, name: "Grade Converter", desc: "Maps numerical scores to standardized 1-9 benchmarks.", construct: "Multi-way Selection" },
+                { num: 24, name: "Rock, Paper, Scissors", desc: "Compares concurrent user steps against randomized options.", construct: "Logical Comparisons" },
+                { num: 26, name: "Dog Age Converter", desc: "Alters chronological calculations using specialized bounds.", construct: "Selection (IF/ELSE)" },
+                { num: 27, name: "Taxi Fare", desc: "Evaluates travel costs with added passenger surcharges.", construct: "Arithmetic & Selection" },
+                { num: 29, name: "Piecework Pay", desc: "Extracts maximum value across alternate pay equations.", construct: "Selection" }
+            ],
+            hard: [
+                { num: 19, name: "Lucky 7", desc: "Repeats structural user prompts until target hits 7.", construct: "Iteration (WHILE loop)" },
+                { num: 20, name: "Pizza Loyalty", desc: "Alters file rows using verified validation keys.", construct: "External File Handling" },
+                { num: 23, name: "Coin Calculator", desc: "Computes change composition values systematically.", construct: "Complex Division Logic" },
+                { num: 25, name: "Runner Categories", desc: "Tallies athletic distribution indexes using structural rows.", construct: "1D Array Processing" },
+                { num: 28, name: "Turf Calculation", desc: "Extracts areas by applying geometry formulas and constants.", construct: "Multi-step Formulas" },
+                { num: 30, name: "Triangle Logic", desc: "Determines side geometry relationships dynamically.", construct: "Boolean Logic (AND/OR)" },
+                { num: 31, name: "Mean Fruit Weight", desc: "Aggregates fractional calculations using variable limits.", construct: "WHILE loop Running Total" },
+                { num: 32, name: "Bank Account Comparison", desc: "Iterates through complex interest accumulation files.", construct: "Data-set Iteration" },
+                { num: 33, name: "Sixth Form Entry", desc: "Evaluates student point tracking profiles against limits.", construct: "FOR Loop & Logic" },
+                { num: 34, name: "Free Electricity", desc: "Tracks minimum values inside linear tracking structures.", construct: "Minimum Value Search" },
+                { num: 35, name: "Trip Planning", desc: "Computes overflow transportation distribution factors.", construct: "Remainders & Modulo" },
+                { num: 36, name: "Fuel Station", desc: "Coordinates pricing tiers with loyalty bonus checkpoints.", construct: "Complex Multi-step Logic" },
+                { num: 37, name: "Drinks Machine", desc: "Validates alphanumeric coordinate targets natively.", construct: "Input Loop Validation" },
+                { num: 38, name: "Savings Plan Table", desc: "Generates multi-line exponential investment tables.", construct: "Nested Multi-year Iteration" },
+                { num: 39, name: "Arithmetic Quiz", desc: "Stores persistent scoring structures inside local storage files.", construct: "Persistent File I/O" },
+                { num: 40, name: "Multi-Level Game", desc: "Manages multiple live variable parameters iteratively.", construct: "State Engine Loops" }
+            ]
+        };
+
+        function switchTab(tier) {
+            // Reset state styling parameters across buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn py-3 rounded-lg font-bold text-xs uppercase tracking-wider border border-transparent transition text-neutral-400 hover:text-neutral-200 cursor-pointer";
+            });
+
+            const grid = document.getElementById('cards-grid');
+            const heading = document.getElementById('hub-heading');
+            const sub = document.getElementById('hub-subheading');
+            
+            grid.innerHTML = '';
+
+            // Layout Heading Modifications via Active Selection Matrices
+            if(tier === 'easy') {
+                document.getElementById('btn-easy').classList.add('active-tier');
+                heading.innerHTML = "🌾 Tier 1: Foundations";
+                sub.innerHTML = "Variables, simple sequencing, basic inputs/outputs, and casting rules.";
+            } else if(tier === 'med') {
+                document.getElementById('btn-med').classList.add('active-tier');
+                heading.innerHTML = "🍁 Tier 2: Control Structures";
+                sub.innerHTML = "Selection (IF/ELIF/ELSE branches) and count-controlled iterations (FOR loops).";
+            } else {
+                document.getElementById('btn-hard').classList.add('active-tier');
+                heading.innerHTML = "🦅 Tier 3: Complex Processing";
+                sub.innerHTML = "Condition loops (WHILE), 1D/2D Arrays, and persistent external text file operations.";
+            }
+
+// Generate structural cards payload
+        database[tier].forEach(item => {
+            const card = document.createElement('div');
+            card.className = "hub-card rounded-xl p-5 flex flex-col justify-between space-y-4 shadow-sm";
+            
+            // DYNAMIC PATH ROUTER
+            let folderName = "tier-1-sequences";
+            if (tier === "med") {
+                folderName = "tier-2-control"; 
+            } else if (tier === "hard") {
+                folderName = "tier-3-complex"; 
+            }
+
+            const targetLink = `challenges/${folderName}/challenge-${item.num}.html`;
+
+            card.innerHTML = `
+                <div class="space-y-2">
+                    <div class="flex justify-between items-start">
+                        <span class="text-[10px] code-font px-2 py-0.5 rounded bg-neutral-800 text-neutral-400">#${String(item.num).padStart(2, '0')}</span>
+                        <span class="text-[9px] code-font tracking-wider text-amber-600 font-semibold uppercase">${item.construct}</span>
+                    </div>
+                    <h4 class="font-bold text-sm text-neutral-100">${item.name}</h4>
+                    <p class="text-xs text-neutral-400 leading-relaxed">${item.desc}</p>
+                </div>
+                <button onclick="window.location.href='${targetLink}'" class="w-full py-2.5 bg-neutral-800 hover:bg-neutral-700 hover:text-amber-500 text-neutral-300 rounded-lg text-xs font-bold tracking-wide transition uppercase cursor-pointer">
+                    Launch Puzzle
+                </button>
+            `;
+            grid.appendChild(card);
+        });
+        }
+
+        // Deep link router initialization configurations
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetTier = urlParams.get('tier');
+
+        if (targetTier === 'med') {
+            switchTab('med');
+        } else if (targetTier === 'hard') {
+            switchTab('hard');
+        } else {
+            switchTab('easy');
+        }
+    </script>
+</body>
+</html>
