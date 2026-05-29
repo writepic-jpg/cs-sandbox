@@ -3,11 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>CS Algo Sandbox | Interactive Revision Challenges</title>
-  <meta name="description" content="A sandbox environment featuring computer science algorithms, revision tasks, and coding challenges.">
+    <title>CS Algo Sandbox | Interactive Revision Challenges</title>
+    <meta name="description" content="A sandbox environment featuring computer science algorithms, revision tasks, and coding challenges.">
+    
+    <link rel="icon" type="image/png" href="assets/images/sandbox-logo.png">
+    
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Inter', sans-serif;
             background-color: #1a1a1a; /* Dark Charcoal Base */
@@ -31,20 +38,21 @@
 <body class="text-neutral-200 min-h-screen flex flex-col justify-between selection:bg-amber-700 selection:text-white">
 
     <nav class="border-b border-neutral-800 bg-[#212121] px-6 py-4 shadow-md">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="h-3 w-3 rounded-full bg-amber-600 animate-pulse"></div>
-                <span class="font-bold tracking-wider text-neutral-100 text-xl tracking-tight">
-                    OCR CS <span class="text-amber-500 font-medium">REVISION ZONE</span>
-                </span>
-            </div>
-            <div class="flex items-center gap-6 text-xs font-semibold tracking-wide text-neutral-400">
-                <a href="challenges-hub.html" class="text-amber-500 hover:text-amber-400 transition">ALL CHALLENGES</a>
-                <a href="#" class="hover:text-neutral-200 transition">SPECIFICATION</a>
-                <a href="#" class="hover:text-neutral-200 transition">RESOURCES</a>
-            </div>
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <img src="assets/images/sandbox-logo.png" alt="AlgoSandbox Logo" class="h-8 w-8 rounded-lg border border-amber-600/30 object-contain">
+            <span class="font-bold tracking-wider text-neutral-100 text-xl tracking-tight">
+                OCR CS <span class="text-amber-500 font-medium">REVISION ZONE</span>
+            </span>
         </div>
-    </nav>
+        <div class="flex items-center gap-6 text-xs font-semibold tracking-wide text-neutral-400">
+            <a href="challenges-hub.html" class="text-amber-500 hover:text-amber-400 transition">ALL CHALLENGES</a>
+            <a href="#pricing" class="hover:text-amber-500 transition text-amber-600">⚡ PREMIUM ACCESS</a>
+            <a href="#" class="hover:text-neutral-200 transition">SPECIFICATION</a>
+            <a href="#" class="hover:text-neutral-200 transition">RESOURCES</a>
+        </div>
+    </div>
+</nav>
 
     <main class="max-w-7xl mx-auto px-6 py-12 flex-grow w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
@@ -162,15 +170,124 @@
                 </div>
 
                 <div class="pt-6 border-t border-neutral-800">
-                    <button onclick="window.location.href='challenges-hub.html?tier=med'" class="w-full py-4 rounded-xl font-bold uppercase tracking-wider bg-amber-600 hover:bg-amber-700 text-neutral-900 shadow-lg shadow-amber-900/10 active:scale-[0.99] transition cursor-pointer flex justify-center items-center gap-2 text-sm">
+                    <button onclick="window.location.href='#pricing'" class="w-full py-4 rounded-xl font-bold uppercase tracking-wider bg-amber-600 hover:bg-amber-700 text-neutral-900 shadow-lg shadow-amber-900/10 active:scale-[0.99] transition cursor-pointer flex justify-center items-center gap-2 text-sm">
                         <span>LAUNCH SANDBOX ENGINE</span>
                     </button>
                 </div>
 
             </div>
         </section>
-
     </main>
+
+    <section id="pricing" class="max-w-7xl mx-auto px-6 pb-24 w-full border-t border-neutral-800/60 pt-16">
+        <div class="text-center mb-12">
+            <h2 class="text-2xl font-extrabold tracking-tight text-neutral-100">
+                Unlock Complete Environment Access
+            </h2>
+            <p class="text-xs code-font text-amber-500 uppercase tracking-widest mt-2">
+                Secure Deployment Gateways
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+            
+            <div class="ochre-card rounded-xl p-8 relative flex flex-col justify-between border-amber-600/30">
+                <div class="absolute top-0 right-0 bg-amber-600 text-neutral-950 font-bold text-[9px] tracking-widest uppercase px-3 py-1 rounded-bl-xl rounded-tr-sm">
+                    Single User
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold text-neutral-100 mb-1">Premium Student License</h3>
+                    <p class="text-xs text-neutral-400 mb-6">Complete ecosystem access without curriculum walls.</p>
+                    
+                    <div class="flex items-baseline text-neutral-100 gap-2 mb-6">
+                        <span class="text-4xl font-extrabold tracking-tight">£2.99</span>
+                        <span class="text-xs text-neutral-500 code-font">/ lifetime access</span>
+                    </div>
+
+                    <ul class="space-y-3 text-xs text-neutral-300 mb-8 border-t border-neutral-800/50 pt-6">
+                        <li class="flex items-center gap-3">
+                            <span class="text-amber-500 font-bold">✓</span>
+                            <span>All interactive examination logic spaces unlocked</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-amber-500 font-bold">✓</span>
+                            <span>Unrestricted automated syntax grading</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-amber-500 font-bold">✓</span>
+                            <span>Personal J277 tracking profile architecture</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-amber-500 font-bold">✓</span>
+                            <span>Flat rate initialization. No subscription templates</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="space-y-4">
+                    <a href="https://buy.stripe.com/5kQbJ0fXGdli5EpgoOew800" class="block text-center py-3 rounded-xl font-bold uppercase tracking-wider bg-amber-600 hover:bg-amber-700 text-neutral-900 text-xs transition duration-150">
+                        💳 Buy with Credit / Debit Card
+                    </a>
+
+                    <a href="https://www.paypal.com/ncp/payment/BEFYMK3XGVZ5G" class="block text-center py-3 rounded-xl font-semibold text-xs border border-neutral-800 hover:border-neutral-700 bg-neutral-900/50 text-neutral-200 transition duration-150">
+                        Alternative: Pay via PayPal Account
+                    </a>
+
+                    <div class="pt-4 border-t border-neutral-800/80 text-center space-y-3">
+                        <span class="block text-[10px] uppercase font-bold tracking-wider text-neutral-400 code-font">Scan to Pay via Mobile</span>
+                        <div class="w-32 h-32 bg-white p-2 rounded-lg mx-auto flex items-center justify-center shadow-lg">
+                            <img src="assets/images/unlock-premium-qrcode.png" alt="PayPal Mobile Merchant Identifier" class="max-w-full h-auto">
+                        </div>
+                        <p class="text-[9px] text-neutral-500 leading-relaxed max-w-xs mx-auto">
+                            Ensure your target delivery email address is entered cleanly into the PayPal transaction note terminal.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ochre-card rounded-xl p-8 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-neutral-100 mb-1">Departmental License</h3>
+                    <p class="text-xs text-neutral-400 mb-6">Institutional parameters designed for secondary schools and computing faculties.</p>
+                    
+                    <div class="flex items-baseline text-neutral-100 gap-2 mb-6">
+                        <span class="text-4xl font-extrabold tracking-tight">£149.00</span>
+                        <span class="text-xs text-neutral-500 code-font">/ annually</span>
+                    </div>
+
+                    <ul class="space-y-3 text-xs text-neutral-300 mb-8 border-t border-neutral-800/50 pt-6">
+                        <li class="flex items-center gap-3">
+                            <span class="text-amber-500 font-bold">✓</span>
+                            <span>Site-wide student access key allocation metrics</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-amber-500 font-bold">✓</span>
+                            <span>Educator sandbox management analytics dashboard</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-amber-500 font-bold">✓</span>
+                            <span>Dedicated institution onboarding instance arrays</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-amber-500 font-bold">✓</span>
+                            <span>Full compatibility with formal procurement structures</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <a href="mailto:support@algosandbox.com?subject=Institutional%20Access%20Request%20-%20AlgoSandbox&body=School%20Name%3A%20%0D%0ADepartment%20Size%20(Estimated%20Seats)%3A%20%0D%0AContact%20Name%20%2F%20Role%3A%20%0D%0APurchase%20Order%20Number%20(If%20available)%3A%20" class="block text-center py-3 rounded-xl font-bold uppercase tracking-wider border border-amber-600/40 text-amber-500 bg-amber-600/5 hover:bg-amber-600/10 text-xs transition duration-150">
+                        🏫 Request Institutional Access
+                    </a>
+                    <p class="text-[9px] text-neutral-500 text-center mt-3 leading-relaxed">
+                        Fires an automated PO template directly to support@algosandbox.com. Invoices and security declarations are finalized and delivered within 24 hours.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
 
     <footer class="border-t border-neutral-800 bg-[#1a1a1a] px-6 py-6 text-center text-xs text-neutral-500 tracking-wide code-font">
         © 2026 OCR CS REVISION ZONE | STUDY HARD, CODE SMART!

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Syllabus Hub | 40 Algorithm Puzzles</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght=400;600&family=Inter:wght=400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -20,13 +20,13 @@
             background: #212121;
             border: 1px solid #2a2a2a;
             transition: all 0.2s ease;
+            position: relative;
         }
-        .hub-card:hover {
+        .hub-card.unlocked-card:hover {
             border-color: #b45309; /* Ochre highlight border */
             background: #242424;
             transform: translateY(-2px);
         }
-        /* Active structural tier class definitions */
         .tab-btn.active-tier { 
             background-color: rgba(180, 83, 9, 0.15); 
             color: #f59e0b; 
@@ -36,15 +36,20 @@
 </head>
 <body class="text-neutral-200 min-h-screen flex flex-col justify-between selection:bg-amber-700 selection:text-white">
 
-    <nav class="border-b border-neutral-800 bg-[#212121] px-6 py-4">
+    <!-- NAVIGATION BAR -->
+    <nav class="border-b border-neutral-800 bg-[#212121] px-6 py-4 shadow-md">
         <div class="max-w-6xl mx-auto flex justify-between items-center">
             <a href="index.html" class="text-xs font-bold text-neutral-400 hover:text-white transition flex items-center gap-2">
                 ← BACK TO DASHBOARD
             </a>
-            <span class="font-bold text-xs tracking-widest text-amber-500 uppercase code-font">ALGORITHM MASTER DIRECTORY</span>
+            <div class="flex items-center gap-4">
+                <a href="index.html#pricing" class="text-[11px] font-bold text-amber-500 hover:text-amber-400 tracking-wider font-mono">⚡ UPGRADE TO PREMIUM</a>
+                <span class="font-bold text-xs tracking-widest text-amber-500 uppercase code-font hidden sm:inline">ALGORITHM MASTER DIRECTORY</span>
+            </div>
         </div>
     </nav>
 
+    <!-- HUB SELECTION CORE GRID -->
     <main class="max-w-6xl mx-auto px-6 py-10 flex-grow w-full space-y-8">
         
         <div class="grid grid-cols-3 gap-3 bg-[#212121] p-2 rounded-xl border border-neutral-800 max-w-2xl mx-auto">
@@ -64,14 +69,77 @@
             <p id="hub-subheading" class="text-xs text-neutral-400">Click a difficulty filter above to view targeted exam constructs.</p>
         </div>
 
-        <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- CHALLENGE CARDS CONTAINER ASYNCHRONOUS TARGET -->
+        <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+        <hr class="border-neutral-800 my-12">
+
+        <!-- CONTACT INTERACTION INTERFACE FORM -->
+        <section class="max-w-2xl mx-auto bg-[#212121] border border-neutral-800 rounded-2xl p-6 md:p-8 shadow-xl">
+            <div class="text-center space-y-2 mb-6">
+                <span class="text-2xl">📬</span>
+                <h3 class="text-lg font-bold text-neutral-100">Need Help or Found a Bug?</h3>
+                <p class="text-xs text-neutral-400">Drop us a line and an expert computer science teacher will review your query.</p>
             </div>
+            
+            <form id="hub-contact-form" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-[10px] uppercase font-bold tracking-wider text-neutral-400 block font-mono">Full Name</label>
+                        <input type="text" name="name" required placeholder="John Doe" class="w-full bg-[#171717] border border-neutral-800 rounded-lg px-4 py-2.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-600 transition">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] uppercase font-bold tracking-wider text-neutral-400 block font-mono">Email Address</label>
+                        <input type="email" name="email" required placeholder="student@school.sch.uk" class="w-full bg-[#171717] border border-neutral-800 rounded-lg px-4 py-2.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-600 transition">
+                    </div>
+                </div>
+                
+                <div class="space-y-1">
+                    <label class="text-[10px] uppercase font-bold tracking-wider text-neutral-400 block font-mono">Message / Issue Details</label>
+                    <textarea name="message" rows="4" required placeholder="Describe the challenge error or question..." class="w-full bg-[#171717] border border-neutral-800 rounded-lg px-4 py-2.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-600 transition resize-none"></textarea>
+                </div>
+                
+                <div id="contact-feedback" class="hidden text-xs py-2 px-3 rounded-lg border font-mono"></div>
+
+                <button type="submit" class="w-full py-3 bg-neutral-800 hover:bg-neutral-700 hover:text-amber-500 text-neutral-200 rounded-xl text-xs font-bold tracking-wide transition uppercase cursor-pointer flex justify-center items-center gap-2">
+                    <span>Dispatch Support Request</span>
+                </button>
+            </form>
+        </section>
 
     </main>
 
-    <footer class="border-t border-neutral-800 bg-[#1a1a1a] px-6 py-4 text-center text-xs text-neutral-500 code-font">
+    <!-- PREMIUM ACCESS POPUP GATEWAY MODAL -->
+    <div id="payment-gate-modal" class="hidden fixed inset-0 bg-neutral-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50">
+        <div class="bg-[#212121] border border-neutral-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+            
+            <button onclick="document.getElementById('payment-gate-modal').classList.add('hidden')" class="absolute top-4 right-4 text-neutral-500 hover:text-neutral-300 cursor-pointer text-xl font-bold">&times;</button>
+            
+            <div class="text-center mb-6">
+                <span class="text-4xl">🔓</span>
+                <h3 class="text-xl font-bold text-neutral-100 mt-2">Unlock Premium Practice Workspace</h3>
+                <p class="text-xs text-neutral-400 mt-2 px-4 leading-relaxed">Challenges 14–40 introduce advanced parameters, algorithms, arrays, and persistent structures. Get permanent full-tier lifetime access for a single payment of <span class="text-amber-500 font-bold font-mono">£2.99</span>.</p>
+            </div>
+
+            <div class="space-y-3">
+                <button id="stripe-checkout-btn" class="w-full py-3 bg-amber-600 hover:bg-amber-700 text-neutral-900 font-bold rounded-xl text-xs uppercase tracking-widest cursor-pointer transition shadow-md">
+                    💳 Pay Securely with Card (Stripe)
+                </button>
+                
+                <a href="index.html#pricing" class="block text-center py-3 bg-neutral-900 hover:bg-neutral-800 text-amber-500 border border-neutral-800 font-medium rounded-xl text-xs uppercase tracking-wider transition">
+                    🔍 View All Options (PayPal / School PO)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- REVISION FOOTER BANNER -->
+    <footer class="border-t border-neutral-800 bg-[#1a1a1a] px-6 py-6 text-center text-xs text-neutral-500 code-font">
         OCR CS REVISION ZONE | 40 CONSTRUCT COMPLIANT BLUEPRINTS
     </footer>
+
+    <script src="https://www.paypal.com/ncp/payment/BEFYMK3XGVZ5G&currency=GBP"></script>
+    <script src="assets/js/contact.js"></script>
 
     <script>
         const database = {
@@ -86,11 +154,11 @@
                 { num: 8, name: "Phone Bill", desc: "Computes fixed charge additions alongside operational usage.", construct: "Multi-step Arithmetic" }
             ],
             med: [
-                { num: 9, name: "Personalized Message", desc: "Compares input name to global stored variables.", construct: "Selection (IF/ELSE)" },
-                { num: 10, name: "Alphabet Check", desc: "Verifies basic factual constant validations via user input.", construct: "Selection (IF/ELSE)" },
-                { num: 11, name: "Largest Number", desc: "Identifies and displays the maximum of two inputs.", construct: "Selection (IF)" },
-                { num: 12, name: "Guessing Game (Simple)", desc: "Validates random bounds matching against integer targets.", construct: "Selection & Random" },
-                { num: 13, name: "Holiday Allowance", desc: "Evaluates full-time vs part-time allowance fractions.", construct: "Selection (IF/ELSE)" },
+                { num: 9, name: "Odd or Even", desc: "Evaluate data branches utilizing numerical division remainders.", construct: "Selection (IF/ELSE)" },
+                { num: 10, name: "Exam Grade Checker", desc: "Construct a cascading chain of validation conditions.", construct: "Multi-way Selection" },
+                { num: 11, name: "Secret Password Guard", desc: "Validate security matching strings via direct criteria comparison.", construct: "Selection (IF/ELSE)" },
+                { num: 12, name: "Guessing Game", desc: "Validates random bounds matching against integer targets.", construct: "Selection & Random" },
+                { num: 13, name: "Holiday Allowance", desc: "Evaluates full-time vs part-time allowance fractions.", construct: "Selection & Arithmetic" },
                 { num: 14, name: "Traffic Lights", desc: "Triggers discrete textual actions via explicit color tracking.", construct: "Multi-way (IF/ELIF/ELSE)" },
                 { num: 15, name: "Olympic Values", desc: "Validates inputs across three core conceptual values.", construct: "Multi-way Selection" },
                 { num: 16, name: "TV Feedback", desc: "Evaluates systemic ranges derived from quantitative durations.", construct: "Range Boundary Checks" },
@@ -123,8 +191,39 @@
             ]
         };
 
+        // LIFECYCLE INITIALIZER ROUTER
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('session') === 'success') {
+                localStorage.setItem('parsons_premium_unlocked', 'true');
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            const isPremiumUnlocked = localStorage.getItem('parsons_premium_unlocked') === 'true';
+            
+            if (!isPremiumUnlocked && typeof paypal !== 'undefined') {
+                paypal.Buttons({
+                    style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
+                    createOrder: (data, actions) => {
+                        return actions.order.create({
+                            purchase_units: [{
+                                description: "OCR CS Parsons Sandbox Premium Access Bundle",
+                                amount: { currency_code: "GBP", value: "2.99" }
+                            }]
+                        });
+                    },
+                    onApprove: (data, actions) => {
+                        return actions.order.capture().then((details) => {
+                            localStorage.setItem('parsons_premium_unlocked', 'true');
+                            alert('🎉 Premium Access Activated! All challenges from 14-40 are permanently unlocked.');
+                            window.location.reload();
+                        });
+                    }
+                }).render('#paypal-button-container');
+            }
+        });
+
         function switchTab(tier) {
-            // Reset state styling parameters across buttons
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.className = "tab-btn py-3 rounded-lg font-bold text-xs uppercase tracking-wider border border-transparent transition text-neutral-400 hover:text-neutral-200 cursor-pointer";
             });
@@ -135,54 +234,84 @@
             
             grid.innerHTML = '';
 
-            // Layout Heading Modifications via Active Selection Matrices
             if(tier === 'easy') {
-                document.getElementById('btn-easy').classList.add('active-tier');
+                document.getElementById('btn-easy').className += ' active-tier';
                 heading.innerHTML = "🌾 Tier 1: Foundations";
                 sub.innerHTML = "Variables, simple sequencing, basic inputs/outputs, and casting rules.";
             } else if(tier === 'med') {
-                document.getElementById('btn-med').classList.add('active-tier');
+                document.getElementById('btn-med').className += ' active-tier';
                 heading.innerHTML = "🍁 Tier 2: Control Structures";
                 sub.innerHTML = "Selection (IF/ELIF/ELSE branches) and count-controlled iterations (FOR loops).";
             } else {
-                document.getElementById('btn-hard').classList.add('active-tier');
+                document.getElementById('btn-hard').className += ' active-tier';
                 heading.innerHTML = "🦅 Tier 3: Complex Processing";
                 sub.innerHTML = "Condition loops (WHILE), 1D/2D Arrays, and persistent external text file operations.";
             }
 
-// Generate structural cards payload
-        database[tier].forEach(item => {
-            const card = document.createElement('div');
-            card.className = "hub-card rounded-xl p-5 flex flex-col justify-between space-y-4 shadow-sm";
-            
-            // DYNAMIC PATH ROUTER
-            let folderName = "tier-1-sequences";
-            if (tier === "med") {
-                folderName = "tier-2-control"; 
-            } else if (tier === "hard") {
-                folderName = "tier-3-complex"; 
-            }
+            const isPremiumUnlocked = localStorage.getItem('parsons_premium_unlocked') === 'true';
 
-            const targetLink = `challenges/${folderName}/challenge-${item.num}.html`;
+            database[tier].forEach(item => {
+                const card = document.createElement('div');
+                
+                let folderName = "tier-1-foundations";
+                if (tier === "med") { folderName = "tier-2-control-structures"; } 
+                else if (tier === "hard") { folderName = "tier-3-advanced"; }
 
-            card.innerHTML = `
-                <div class="space-y-2">
-                    <div class="flex justify-between items-start">
-                        <span class="text-[10px] code-font px-2 py-0.5 rounded bg-neutral-800 text-neutral-400">#${String(item.num).padStart(2, '0')}</span>
-                        <span class="text-[9px] code-font tracking-wider text-amber-600 font-semibold uppercase">${item.construct}</span>
-                    </div>
-                    <h4 class="font-bold text-sm text-neutral-100">${item.name}</h4>
-                    <p class="text-xs text-neutral-400 leading-relaxed">${item.desc}</p>
-                </div>
-                <button onclick="window.location.href='${targetLink}'" class="w-full py-2.5 bg-neutral-800 hover:bg-neutral-700 hover:text-amber-500 text-neutral-300 rounded-lg text-xs font-bold tracking-wide transition uppercase cursor-pointer">
-                    Launch Puzzle
-                </button>
-            `;
-            grid.appendChild(card);
-        });
+                const targetLink = `challenges/${folderName}/challenge-${item.num}.html`;
+                const isChallengeLocked = (item.num >= 14) && !isPremiumUnlocked;
+
+                if (isChallengeLocked) {
+                    card.className = "hub-card rounded-xl p-5 flex flex-col justify-between space-y-4 shadow-sm opacity-65 border-dashed border-amber-600/30 bg-[#1e1e1e]/90 select-none";
+                    card.innerHTML = `
+                        <div class="absolute -top-2.5 right-3 bg-neutral-900 border border-amber-500/40 text-amber-500 font-bold px-2 py-0.5 rounded text-[9px] uppercase tracking-wider font-mono shadow-md z-10 flex items-center gap-1">
+                            <span>🔒</span> PREMIUM
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-start">
+                                <span class="text-[10px] code-font px-2 py-0.5 rounded bg-neutral-900 text-neutral-500">#${String(item.num).padStart(2, '0')}</span>
+                                <span class="text-[9px] code-font tracking-wider text-neutral-600 font-semibold uppercase">${item.construct}</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-neutral-400 flex items-center gap-2">${item.name}</h4>
+                            <p class="text-xs text-neutral-500 leading-relaxed">${item.desc}</p>
+                        </div>
+                        <!-- COMBINED GATEWAY ACTIONS (MODAL TRIGGER OR ANCHOR BACKLINK) -->
+                        <button onclick="handlePremiumWall()" class="w-full py-2.5 bg-neutral-900 text-amber-500 border border-amber-500/20 hover:bg-amber-600/10 rounded-lg text-xs font-bold tracking-wide transition uppercase cursor-pointer">
+                            Unlock Workspace
+                        </button>
+                    `;
+                } else {
+                    card.className = "hub-card unlocked-card rounded-xl p-5 flex flex-col justify-between space-y-4 shadow-sm";
+                    card.innerHTML = `
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-start">
+                                <span class="text-[10px] code-font px-2 py-0.5 rounded bg-neutral-800 text-neutral-400">#${String(item.num).padStart(2, '0')}</span>
+                                <span class="text-[9px] code-font tracking-wider text-amber-600 font-semibold uppercase">${item.construct}</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-neutral-100">${item.name}</h4>
+                            <p class="text-xs text-neutral-400 leading-relaxed">${item.desc}</p>
+                        </div>
+                        <button onclick="window.location.href='${targetLink}'" class="w-full py-2.5 bg-neutral-800 hover:bg-neutral-700 hover:text-amber-500 text-neutral-300 rounded-lg text-xs font-bold tracking-wide transition uppercase cursor-pointer">
+                            Launch Puzzle
+                        </button>
+                    `;
+                }
+                grid.appendChild(card);
+            });
         }
 
-        // Deep link router initialization configurations
+        // TRIGGER PREMIUM CONVERSION ROUTINES
+        function handlePremiumWall() {
+            // Option A: Pop up the conversion modal immediately
+            const modal = document.getElementById('payment-gate-modal');
+            modal.classList.remove('hidden');
+            
+            // Map payment buttons smoothly
+            document.getElementById('stripe-checkout-btn').onclick = () => {
+                window.location.href = "https://buy.stripe.com/5kQbJ0fXGdli5EpgoOew800";
+            };
+        }
+
+        // Deep Link Initial Routing Controls
         const urlParams = new URLSearchParams(window.location.search);
         const targetTier = urlParams.get('tier');
 
