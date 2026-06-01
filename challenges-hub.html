@@ -92,7 +92,13 @@
 
             <!-- Enhanced Form Interface Linked to Formspree -->
             <form id="hub-contact-form" action="https://formspree.io/f/xwvzdrgb" method="POST" class="space-y-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div data-fs-success class="hidden text-xs py-2.5 px-4 rounded-xl border font-mono bg-emerald-950/40 border-emerald-800/60 text-emerald-400 mb-4 animate-fade-  in">
+                ✓ Success: Your message has been sent to hello@verdantlogic.io!
+            </div>
+            <div data-fs-error class="hidden text-xs py-2.5 px-4 rounded-xl border font-mono bg-rose-950/40 border-rose-800/60 text-rose-400 mb-4 animate-fade-in">
+                ⚠️ Dispatch Failure: Form submission rejected by the server gateway.
+            </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1">
                         <label class="text-[10px] uppercase font-bold tracking-wider text-neutral-400 block font-mono">Full Name</label>
                         <input type="text" name="name" required data-fs-field placeholder="John Doe" class="w-full bg-[#171717] border border-neutral-800 rounded-lg px-4 py-2.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-600 transition">
@@ -111,7 +117,7 @@
                     <span data-fs-error="message" class="text-[10px] text-rose-400 font-mono block mt-1"></span>
                 </div>
 
-                <button type="submit" data-fs-submit-btn class="w-full py-3 bg-neutral-800 hover:bg-neutral-700 hover:text-amber-500 text-neutral-200 rounded-xl text-xs font-bold tracking-wide transition uppercase cursor-pointer flex justify-center items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
+               <button type="submit" data-fs-submit-btn class="w-full py-3 bg-neutral-800 hover:bg-neutral-700 hover:text-amber-500 text-neutral-200 rounded-xl text-xs font-bold tracking-wide transition uppercase cursor-pointer flex justify-center items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
                     <span>Send Contact Request</span>
                 </button>
             </form>
@@ -149,8 +155,16 @@
     </footer>
 
     <script src="https://www.paypal.com/ncp/payment/BEFYMK3XGVZ5G&currency=GBP"></script>
-    <script src="assets/js/contact.js"></script>
-
+   <script src="https://www.paypal.com/ncp/payment/BEFYMK3XGVZ5G&currency=GBP"></script>
+    
+    <script src="https://unpkg.com/@formspree/ajax@1"></script>
+    <script>
+        window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+        formspree('initForm', { 
+            formElement: '#hub-contact-form', 
+            formId: 'xwvzdrgb' 
+        });
+    </script>
     <script>
         const database = {
             easy: [
