@@ -82,27 +82,37 @@
                 <p class="text-xs text-neutral-400">Drop us a line and an expert computer science teacher will review your query.</p>
             </div>
             
+            <!-- Formspree Alert Feedback Banners -->
+            <div data-fs-success class="hidden text-xs py-2.5 px-4 rounded-xl border font-mono bg-emerald-950/40 border-emerald-800/60 text-emerald-400 mb-4 animate-fade-in">
+                ✓ Success: Your message has been sent to hello@verdantlogic.io!
+            </div>
+            <div data-fs-error class="hidden text-xs py-2.5 px-4 rounded-xl border font-mono bg-rose-950/40 border-rose-800/60 text-rose-400 mb-4 animate-fade-in">
+                ⚠️ Dispatch Failure: Form submission rejected by the server gateway.
+            </div>
+
+            <!-- Enhanced Form Interface Linked to Formspree -->
             <form id="hub-contact-form" class="space-y-4">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1">
                         <label class="text-[10px] uppercase font-bold tracking-wider text-neutral-400 block font-mono">Full Name</label>
-                        <input type="text" name="name" required placeholder="John Doe" class="w-full bg-[#171717] border border-neutral-800 rounded-lg px-4 py-2.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-600 transition">
+                        <input type="text" name="name" required data-fs-field placeholder="John Doe" class="w-full bg-[#171717] border border-neutral-800 rounded-lg px-4 py-2.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-600 transition">
+                        <span data-fs-error="name" class="text-[10px] text-rose-400 font-mono block mt-1"></span>
                     </div>
                     <div class="space-y-1">
                         <label class="text-[10px] uppercase font-bold tracking-wider text-neutral-400 block font-mono">Email Address</label>
-                        <input type="email" name="email" required placeholder="student@school.sch.uk" class="w-full bg-[#171717] border border-neutral-800 rounded-lg px-4 py-2.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-600 transition">
+                        <input type="email" name="email" required data-fs-field placeholder="student@school.sch.uk" class="w-full bg-[#171717] border border-neutral-800 rounded-lg px-4 py-2.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-600 transition">
+                        <span data-fs-error="email" class="text-[10px] text-rose-400 font-mono block mt-1"></span>
                     </div>
                 </div>
                 
                 <div class="space-y-1">
                     <label class="text-[10px] uppercase font-bold tracking-wider text-neutral-400 block font-mono">Message / Issue Details</label>
-                    <textarea name="message" rows="4" required placeholder="Describe the challenge error or question..." class="w-full bg-[#171717] border border-neutral-800 rounded-lg px-4 py-2.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-600 transition resize-none"></textarea>
+                    <textarea name="message" rows="4" required data-fs-field placeholder="Describe the challenge error or question..." class="w-full bg-[#171717] border border-neutral-800 rounded-lg px-4 py-2.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-600 transition resize-none"></textarea>
+                    <span data-fs-error="message" class="text-[10px] text-rose-400 font-mono block mt-1"></span>
                 </div>
-                
-                <div id="contact-feedback" class="hidden text-xs py-2 px-3 rounded-lg border font-mono"></div>
 
-                <button type="submit" class="w-full py-3 bg-neutral-800 hover:bg-neutral-700 hover:text-amber-500 text-neutral-200 rounded-xl text-xs font-bold tracking-wide transition uppercase cursor-pointer flex justify-center items-center gap-2">
-                    <span>Dispatch Support Request</span>
+                <button type="submit" data-fs-submit-btn class="w-full py-3 bg-neutral-800 hover:bg-neutral-700 hover:text-amber-500 text-neutral-200 rounded-xl text-xs font-bold tracking-wide transition uppercase cursor-pointer flex justify-center items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
+                    <span>Send Contact Request</span>
                 </button>
             </form>
         </section>
