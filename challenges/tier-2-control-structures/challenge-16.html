@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge #16 | Parsons Sandbox</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght=400;500&family=Inter:wght=400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#171717] text-neutral-200 min-h-screen flex flex-col justify-between selection:bg-amber-700 selection:text-white relative overflow-x-hidden">
+    
+    <header class="border-b border-neutral-800 bg-[#212121] px-6 py-4 shadow-md">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="flex items-center gap-2">
+                <a href="../../challenges-hub.html" class="text-xs font-bold text-neutral-400 hover:text-amber-500 transition mr-2">← HUB</a>
+                <span class="h-2 w-2 rounded-full bg-amber-600"></span>
+                <h1 class="text-lg font-bold tracking-tight text-neutral-100">OCR CS <span class="text-amber-500 font-medium">Parsons Sandbox</span></h1>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <div class="bg-[#2a2a2a] border border-neutral-800 px-4 py-2 rounded-lg flex items-center gap-4 text-xs">
+                    <div><span class="text-neutral-400 block text-[10px] uppercase font-bold tracking-wider">CHALLENGE</span><span id="script-title-tag" class="font-semibold text-neutral-200 font-mono">#16_tv_feedback.py</span>
+                    <div class="h-8 w-[1px] bg-neutral-800"></div>
+                    <div><span class="text-neutral-400 block text-[10px] uppercase font-bold tracking-wider">STREAK SCORE</span><span id="score-display" class="font-bold text-amber-500 text-sm font-mono">000</span></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <section class="lg:col-span-4 flex flex-col gap-4">
+            <div class="bg-[#212121] border border-neutral-800 rounded-xl p-5 shadow-sm">
+                <h2 id="tier-tag" class="text-[10px] font-bold uppercase tracking-widest text-amber-500 mb-2">Tier 2: Intermediate</h2>
+                <h3 id="puzzle-heading" class="text-lg font-semibold text-neutral-100 mb-3">Holiday Allowance</h3>
+                <p id="puzzle-desc" class="text-sm text-neutral-400 leading-relaxed">Perform relative data point arithmetic transformations inside explicit algorithmic selection structures.</p>
+            </div>
+
+            <div class="bg-[#212121] border border-neutral-800 rounded-xl p-5 shadow-sm border-l-4 border-l-amber-500/40">
+               <div class="flex items-center gap-2 mb-2">
+    <span class="text-xs">📋</span>
+    <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-300">Examiner Marking Notes</h4>
+</div>
+<ul class="text-xs text-neutral-400 space-y-2 list-disc list-inside">
+    <li><strong class="text-amber-400/90">Range Check Syntax:</strong> When using logical operators like <code class="font-mono text-amber-200/80">AND</code> to check a range, both sides of the operator must be fully formed evaluations containing the variable name.</li>
+    <li><strong class="text-amber-400/90">Casing Requirements:</strong> ERL structural keywords like <code class="font-mono text-amber-200/80">INPUT</code> and <code class="font-mono text-amber-200/80">THEN</code> must be strictly written in uppercase to guarantee full credit.</li>
+</ul>
+            </div>
+        </section>
+
+        <section class="lg:col-span-8 flex flex-col gap-4">
+            <div class="bg-[#212121] border border-neutral-800 rounded-t-xl px-4 py-3 flex justify-between items-center shadow-sm">
+                <span class="text-xs text-neutral-500 font-mono">student_attempt.py</span>
+                <button onclick="initWorkspace()" class="text-xs text-neutral-400 hover:text-amber-500 transition-colors cursor-pointer">Reset Workspace</button>
+            </div>
+            <div id="parsons-workspace" class="bg-[#1e1e1e] border-x border-b border-neutral-800 rounded-b-xl p-4 min-h-[300px] flex flex-col gap-2 shadow-inner"></div>
+            <div id="feedback-panel" class="hidden rounded-xl p-4 border text-sm transition-all duration-300"></div>
+            <div class="flex items-center justify-end gap-4 mt-2">
+                <button id="action-btn" onclick="checkAnswer()" class="w-full sm:w-auto px-6 py-3 bg-amber-600 hover:bg-amber-700 text-neutral-900 font-bold rounded-xl text-xs uppercase tracking-wide cursor-pointer">Verify Code Alignment</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-neutral-800 bg-[#1a1a1a] py-4 text-center text-xs text-neutral-500 font-mono">OCR CS REVISION ZONE</footer>
+
+<script>
+   const challengeData = {
+        id: "challenge-16",
+        fileName: "#16_tv_feedback.py",
+        tier: "Tier 2: Intermediate",
+        title: "TV Feedback",
+        description: "Parse a numeric quantity value and run boundary verification tracking. Construct discrete logical structures utilizing continuous mathematical range filters bound by clear upper and lower limits.",
+        correctOrder: [
+            { text: "hours = INPUT(\"Average hours spent watching TV: \")", indent: 0 },
+            { text: "IF hours < 2 THEN", indent: 0 },
+            { text: "OUTPUT \"That should be ok\"", indent: 1 },
+            { text: "ELSEIF hours >= 2 AND hours <= 4 THEN", indent: 0 },
+            { text: "OUTPUT \"That will rot your brain\"", indent: 1 },
+            { text: "ELSE", indent: 0 },
+            { text: "OUTPUT \"That is too much TV\"", indent: 1 },
+            { text: "ENDIF", indent: 0 }
+        ],
+        scrambledLines: [
+            { id: "l16-b0", text: "hours = INPUT(\"Average hours spent watching TV: \")" },
+            { id: "l16-b1", text: "hours = input(\"Average hours watch TV\")" }, // Distractor: lowercase casting
+            { id: "l16-b2", text: "IF hours < 2 THEN" },
+            { id: "l16-b3", text: "IF hours < 2 OUTPUT \"That should be ok\"" }, // Distractor: missing THEN token
+            { id: "l16-b4", text: "OUTPUT \"That should be ok\"" },
+            { id: "l16-b5", text: "ELSEIF hours >= 2 AND hours <= 4 THEN" },
+            { id: "l16-b6", text: "ELSEIF hours >= 2 AND <= 4 THEN" }, // Distractor: missing evaluation variable on right side
+            { id: "l16-b7", text: "OUTPUT \"That will rot your brain\"" },
+            { id: "l16-b8", text: "ELSE" },
+            { id: "l16-b9", text: "OUTPUT \"That is too much TV\"" },
+            { id: "l16-b10", text: "ENDIF" }
+        ]
+    };
+</script>
+<script src="../../assets/js/engine.js"></script>
+</body>
+</html>
