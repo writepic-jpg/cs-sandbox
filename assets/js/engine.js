@@ -2,6 +2,10 @@ let activeDraggedElement = null;
 let hasScoredThisSession = false;
 let userScore = parseInt(localStorage.getItem('parsons_streak_score') || '0', 10);
 
+// Mobile Touch Tracking Variables
+let activeTouchElement = null;
+let touchStartY = 0;
+
 // Web Audio Synthesizer Runtime Engine
 function playAudioTone(f, d, t='sine', s=0) { 
     try { 
@@ -85,18 +89,20 @@ function initWorkspace() {
 function createCodeBlockNode(id, text) { 
     const row = document.createElement('div'); 
     row.id = id; 
-    // Added a global explicit tracking class 'parsons-row-container' for drag boundaries
-    row.className = "parsons-row-container flex items-center gap-3 p-1 rounded-lg group transition-all duration-150"; 
+    row.className = "parsons-row-container flex items-center gap-3 p-1 rounded-lg group transition-all duration-150 touch-none select-none"; 
     row.setAttribute("data-indent", "0"); 
     row.innerHTML = `
         <div class="flex items-center gap-1 opacity-20 group-hover:opacity-100 transition-opacity">
             <button onclick="changeIndentation('${id}', -1)" class="w-5 h-5 flex items-center justify-center bg-neutral-800 text-neutral-400 rounded text-xs font-bold hover:bg-neutral-700 cursor-pointer">&lsaquo;</button>
             <button onclick="changeIndentation('${id}', 1)" class="w-5 h-5 flex items-center justify-center bg-neutral-800 text-neutral-400 rounded text-xs font-bold hover:bg-neutral-700 cursor-pointer">&rsaquo;</button>
         </div>
-        <div draggable="true" class="flex-grow flex items-center bg-[#262626] border border-neutral-800 text-amber-100 rounded-lg py-2.5 px-4 cursor-grab active:cursor-grabbing border-l-4 border-l-amber-600/20 hover:border-l-amber-500">
+        <div draggable="true" class="flex-grow flex items-center bg-[#262626] border border-neutral-800 text-amber-100 rounded-lg py-2.5 px-4 cursor-grab active:cursor-grabbing border-l-4 border-l-amber-600/20 hover:border-l-amber-500 select-none">
             <span class="text-neutral-600 select-none mr-3 text-xs">☰</span>
             <span class="code-font text-xs whitespace-pre select-none">${text}</span>
         </div>`; 
+    
+    // Inject mobile touch listener registration directly into node lifecycle
+    setupTouchContext(row);
     return row; 
 }
 
@@ -122,6 +128,7 @@ function checkDropPlacementMatch(el) {
     }
 }
 
+// Desktop Drag and Drop Engine
 function setupDragAndDropContext(container) { 
     container.addEventListener('dragstart', (e) => { 
         activeDraggedElement = e.target.closest('.parsons-row-container'); 
@@ -135,7 +142,6 @@ function setupDragAndDropContext(container) {
     }); 
     container.addEventListener('dragover', (e) => { 
         e.preventDefault(); 
-        // 🌟 FIX: Universally grabs rows via structural class name rather than checking hardcoded string prefixes
         const target = e.target.closest('.parsons-row-container'); 
         if (!target || target === activeDraggedElement) return; 
         const box = target.getBoundingClientRect(); 
@@ -145,6 +151,70 @@ function setupDragAndDropContext(container) {
             target.before(activeDraggedElement); 
         }
     }); 
+}
+
+// Mobile Touch Sorting Module Engine Extension
+function setupTouchContext(rowElement) {
+    rowElement.addEventListener('touchstart', (e) => {
+        const row = e.target.closest('.parsons-row-container');
+        if (!row) return;
+        
+        activeTouchElement = row;
+        touchStartY = e.touches[0].clientY;
+        
+        // Apply temporary high-contrast dragging styles
+        const dragCard = row.querySelector('div[draggable="true"]');
+        if (dragCard) {
+            dragCard.classList.remove('border-neutral-800');
+            dragCard.classList.add('border-amber-500', 'bg-neutral-800', 'scale-[1.01]', 'shadow-2xl');
+        }
+    }, { passive: true });
+
+    rowElement.addEventListener('touchmove', (e) => {
+        if (!activeTouchElement) return;
+        
+        // Prevent entire mobile browser viewport from pulling/scrolling down while sorting
+        e.preventDefault(); 
+        
+        const currentY = e.touches[0].clientY;
+        const workspace = document.getElementById('parsons-workspace');
+        if (!workspace) return;
+        
+        // Collect alternative adjacent rows to process positional geometry
+        const siblingRows = Array.from(workspace.querySelectorAll('.parsons-row-container'))
+                                .filter(item => item !== activeTouchElement);
+                                
+        // Identify targeted vertical intersection row node bounds
+        const targetRow = siblingRows.find(item => {
+            const box = item.getBoundingClientRect();
+            return currentY >= box.top && currentY <= box.bottom;
+        });
+
+        if (targetRow) {
+            const box = targetRow.getBoundingClientRect();
+            const middle = box.top + box.height / 2;
+            
+            if (currentY < middle) {
+                targetRow.before(activeTouchElement);
+            } else {
+                targetRow.after(activeTouchElement);
+            }
+        }
+    }, { passive: false });
+
+    rowElement.addEventListener('touchend', () => {
+        if (!activeTouchElement) return;
+        
+        // Restore standard structural design configurations
+        const dragCard = activeTouchElement.querySelector('div[draggable="true"]');
+        if (dragCard) {
+            dragCard.classList.remove('border-amber-500', 'bg-neutral-800', 'scale-[1.01]', 'shadow-2xl');
+            dragCard.classList.add('border-neutral-800');
+        }
+        
+        checkDropPlacementMatch(activeTouchElement);
+        activeTouchElement = null;
+    });
 }
 
 // Sequence Validation Compiler Logic
@@ -163,7 +233,6 @@ function checkAnswer() {
         const indent = parseInt(row.getAttribute('data-indent'), 10);
         const match = challengeData.correctOrder[idx]; 
         
-        // Normalize quotes (convert all double quotes to single quotes for comparison safety)
         const normalizedText = text.replace(/"/g, "'");
         const normalizedMatch = match ? match.text.trim().replace(/"/g, "'") : "";
         
