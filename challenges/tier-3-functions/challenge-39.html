@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge #39 | Parsons Sandbox</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#171717] text-neutral-200 min-h-screen flex flex-col justify-between selection:bg-amber-700 selection:text-white relative overflow-x-hidden">
+    
+    <header class="border-b border-neutral-800 bg-[#212121] px-6 py-4 shadow-md">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="flex items-center gap-2">
+                <a href="../../challenges-hub.html" class="text-xs font-bold text-neutral-400 hover:text-amber-500 transition mr-2">← HUB</a>
+                <span class="h-2 w-2 rounded-full bg-amber-600"></span>
+                <h1 class="text-lg font-bold tracking-tight text-neutral-100">OCR CS <span class="text-amber-500 font-medium">Parsons Sandbox</span></h1>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <div class="bg-[#2a2a2a] border border-neutral-800 px-4 py-2 rounded-lg flex items-center gap-4 text-xs">
+                    <div><span class="text-neutral-400 block text-[10px] uppercase font-bold tracking-wider">CHALLENGE</span><span id="script-title-tag" class="font-semibold text-neutral-200 font-mono">#39_arithmetic_quiz.py</span></div>
+                    <div class="h-8 w-[1px] bg-neutral-800"></div>
+                    <div><span class="text-neutral-400 block text-[10px] uppercase font-bold tracking-wider">STREAK SCORE</span><span id="score-display" class="font-bold text-amber-500 text-sm font-mono">000</span></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <section class="lg:col-span-4 flex flex-col gap-4">
+            <div class="bg-[#212121] border border-neutral-800 rounded-xl p-5 shadow-sm">
+                <h2 id="tier-tag" class="text-[10px] font-bold uppercase tracking-widest text-amber-500 mb-2">Tier 3: Hard</h2>
+                <h3 id="puzzle-heading" class="text-lg font-semibold text-neutral-100 mb-3">Arithmetic Quiz</h3>
+                <p id="puzzle-desc" class="text-sm text-neutral-400 leading-relaxed">Incorporate low-level random generational boundaries alongside file handling output writing methods inside clean validation tracking loops.</p>
+            </div>
+
+            <div class="bg-[#212121] border border-neutral-800 rounded-xl p-5 shadow-sm border-l-4 border-l-amber-500/40">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-xs">📋</span>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-300">Examiner Marking Notes</h4>
+                </div>
+                <ul class="text-xs text-neutral-400 space-y-2 list-disc list-inside">
+                    <li><strong class="text-amber-400/90">Random Limits:</strong> The built-in function <code class="font-mono text-amber-200/80">random(1, 10)</code> works inclusively across both listed bounds inside the Exam Reference Language schema framework. Capitalized variations are invalid.</li>
+                    <li><strong class="text-amber-400/90">File IO:</strong> Modifying file records requires an explicit handler initialization assignment via <code class="font-mono text-amber-200/80">open()</code> prior to executing write methods. Direct commands without active open calls are structurally flawed.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="lg:col-span-8 flex flex-col gap-4">
+            <div class="bg-[#212121] border border-neutral-800 rounded-t-xl px-4 py-3 flex justify-between items-center shadow-sm">
+                <span class="text-xs text-neutral-500 font-mono">student_attempt.py</span>
+                <button onclick="initWorkspace()" class="text-xs text-neutral-400 hover:text-amber-500 transition-colors cursor-pointer">Reset Workspace</button>
+            </div>
+            <div id="parsons-workspace" class="bg-[#1e1e1e] border-x border-b border-neutral-800 rounded-b-xl p-4 min-h-[300px] flex flex-col gap-2 shadow-inner"></div>
+            <div id="feedback-panel" class="hidden rounded-xl p-4 border text-sm transition-all duration-300"></div>
+            <div class="flex items-center justify-end gap-4 mt-2">
+                <button id="action-btn" onclick="checkAnswer()" class="w-full sm:w-auto px-6 py-3 bg-amber-600 hover:bg-amber-700 text-neutral-900 font-bold rounded-xl text-xs uppercase tracking-wide cursor-pointer">Verify Code Alignment</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-neutral-800 bg-[#1a1a1a] py-4 text-center text-xs text-neutral-500 font-mono">OCR CS REVISION ZONE</footer>
+
+<script>
+    const challengeData = {
+        id: "challenge-39",
+        fileName: "#39_arithmetic_quiz.py",
+        tier: "Tier 3: Hard",
+        title: "Arithmetic Quiz",
+        description: "Set a tracking point metric to 0. Build a 10-step iteration loop that generates twin random factors internally, displays dynamic concatenation question text, checks input equality, and appends scores to storage files.",
+        correctOrder: [
+            { text: "score = 0", indent: 0 },
+            { text: "FOR i = 1 TO 10", indent: 0 },
+            { text: "n1 = random(1, 10)", indent: 1 },
+            { text: "n2 = random(1, 10)", indent: 1 },
+            { text: "userAns = INPUT(\"What is \" + n1 + \" + \" + n2 + \"? \")", indent: 1 },
+            { text: "IF userAns == (n1 + n2) THEN score = score + 1", indent: 1 },
+            { text: "NEXT i", indent: 0 },
+            { text: "scoreFile = open(\"scores.txt\")", indent: 0 },
+            { text: "scoreFile.writeLine(score)", indent: 0 }
+        ],
+        scrambledLines: [
+            { id: "l39-b0", text: "score = 0" },
+            { id: "l39-b1", text: "FOR i = 1 TO 10" },
+            { id: "l39-b2", text: "n1 = random(1, 10)" },
+            { id: "l39-b3", text: "num1 = RANDOM(1, 10)" }, 
+            { id: "l39-b4", text: "n2 = random(1, 10)" },
+            { id: "l39-b5", text: "userAns = INPUT(\"What is \" + n1 + \" + \" + n2 + \"? \")" },
+            { id: "l39-b6", text: "IF userAns == (n1 + n2) THEN score = score + 1" },
+            { id: "l39-b7", text: "IF ans = correctAns THEN" }, 
+            { id: "l39-b8", text: "NEXT i" },
+            { id: "l39-b9", text: "scoreFile = open(\"scores.txt\")" },
+            { id: "l39-b10", text: "scoreFile = READ(\"scores.txt\")" }, 
+            { id: "l39-b11", text: "scoreFile.writeLine(score)" }
+        ]
+    };
+</script>
+<script src="../../assets/js/engine.js"></script>
+</body>
+</html>

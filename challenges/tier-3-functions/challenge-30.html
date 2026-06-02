@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge #30 | Parsons Sandbox</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#171717] text-neutral-200 min-h-screen flex flex-col justify-between selection:bg-amber-700 selection:text-white relative overflow-x-hidden">
+    
+    <header class="border-b border-neutral-800 bg-[#212121] px-6 py-4 shadow-md">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="flex items-center gap-2">
+                <a href="../../challenges-hub.html" class="text-xs font-bold text-neutral-400 hover:text-amber-500 transition mr-2">← HUB</a>
+                <span class="h-2 w-2 rounded-full bg-amber-600"></span>
+                <h1 class="text-lg font-bold tracking-tight text-neutral-100">OCR CS <span class="text-amber-500 font-medium">Parsons Sandbox</span></h1>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <div class="bg-[#2a2a2a] border border-neutral-800 px-4 py-2 rounded-lg flex items-center gap-4 text-xs">
+                    <div><span class="text-neutral-400 block text-[10px] uppercase font-bold tracking-wider">CHALLENGE</span><span id="script-title-tag" class="font-semibold text-neutral-200 font-mono">#30_isosceles_checker.py</span></div>
+                    <div class="h-8 w-[1px] bg-neutral-800"></div>
+                    <div><span class="text-neutral-400 block text-[10px] uppercase font-bold tracking-wider">STREAK SCORE</span><span id="score-display" class="font-bold text-amber-500 text-sm font-mono">000</span></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <section class="lg:col-span-4 flex flex-col gap-4">
+            <div class="bg-[#212121] border border-neutral-800 rounded-xl p-5 shadow-sm">
+                <h2 id="tier-tag" class="text-[10px] font-bold uppercase tracking-widest text-amber-500 mb-2">Tier 1: Easy</h2>
+                <h3 id="puzzle-heading" class="text-lg font-semibold text-neutral-100 mb-3">Isosceles Checker</h3>
+                <p id="puzzle-desc" class="text-sm text-neutral-400 leading-relaxed">Establish comprehensive compound conditional boundaries evaluating mutual equalities within single sequence selection states.</p>
+            </div>
+
+            <div class="bg-[#212121] border border-neutral-800 rounded-xl p-5 shadow-sm border-l-4 border-l-amber-500/40">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-xs">📋</span>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-300">Examiner Marking Notes</h4>
+                </div>
+                <ul class="text-xs text-neutral-400 space-y-2 list-disc list-inside">
+                    <li><strong class="text-amber-400/90">Compound Expressions:</strong> Each conditional term inside compound expressions must stand independently. Omit patterns like <code class="font-mono text-amber-200/80">side1 == side2 OR side3</code> to avoid syntax crashes.</li>
+                    <li><strong class="text-amber-400/90">Branch Control:</strong> Ensure keywords align with Exam Reference specifications—specifically, <code class="font-mono text-amber-200/80">ENDIF</code> must be constructed as a singular string block.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="lg:col-span-8 flex flex-col gap-4">
+            <div class="bg-[#212121] border border-neutral-800 rounded-t-xl px-4 py-3 flex justify-between items-center shadow-sm">
+                <span class="text-xs text-neutral-500 font-mono">student_attempt.py</span>
+                <button onclick="initWorkspace()" class="text-xs text-neutral-400 hover:text-amber-500 transition-colors cursor-pointer">Reset Workspace</button>
+            </div>
+            <div id="parsons-workspace" class="bg-[#1e1e1e] border-x border-b border-neutral-800 rounded-b-xl p-4 min-h-[300px] flex flex-col gap-2 shadow-inner"></div>
+            <div id="feedback-panel" class="hidden rounded-xl p-4 border text-sm transition-all duration-300"></div>
+            <div class="flex items-center justify-end gap-4 mt-2">
+                <button id="action-btn" onclick="checkAnswer()" class="w-full sm:w-auto px-6 py-3 bg-amber-600 hover:bg-amber-700 text-neutral-900 font-bold rounded-xl text-xs uppercase tracking-wide cursor-pointer">Verify Code Alignment</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-neutral-800 bg-[#1a1a1a] py-4 text-center text-xs text-neutral-500 font-mono">OCR CS REVISION ZONE</footer>
+
+<script>
+    const challengeData = {
+        id: "challenge-30",
+        fileName: "#30_isosceles_checker.py",
+        tier: "Tier 1: Easy",
+        title: "Isosceles Checker",
+        description: "Collect three distinct linear triangle bounds via inputs. Compare items using multi-part logical OR gates to look for matching pairs. If true, output 'Isosceles'; otherwise, output 'Not Isosceles'.",
+        correctOrder: [
+            { text: "side1 = INPUT(\"Side 1: \")", indent: 0 },
+            { text: "side2 = INPUT(\"Side 2: \")", indent: 0 },
+            { text: "side3 = INPUT(\"Side 3: \")", indent: 0 },
+            { text: "IF side1 == side2 OR side1 == side3 OR side2 == side3 THEN", indent: 0 },
+            { text: "OUTPUT \"Isosceles\"", indent: 1 },
+            { text: "ELSE", indent: 0 },
+            { text: "OUTPUT \"Not Isosceles\"", indent: 1 },
+            { text: "ENDIF", indent: 0 }
+        ],
+        scrambledLines: [
+            { id: "l30-b0", text: "side1 = INPUT(\"Side 1: \")" },
+            { id: "l30-b1", text: "side2 = INPUT(\"Side 2: \")" },
+            { id: "l30-b2", text: "side3 = INPUT(\"Side 3: \")" },
+            { id: "l30-b3", text: "IF side1 == side2 OR side1 == side3 OR side2 == side3 THEN" },
+            { id: "l30-b4", text: "IF side1 == side2 OR side3 THEN" }, 
+            { id: "l30-b5", text: "OUTPUT \"Isosceles\"" },
+            { id: "l30-b6", text: "ELSE" },
+            { id: "l30-b7", text: "OUTPUT \"Not Isosceles\"" },
+            { id: "l30-b8", text: "ENDIF" },
+            { id: "l30-b9", text: "END IF" } 
+        ]
+    };
+</script>
+<script src="../../assets/js/engine.js"></script>
+</body>
+</html>

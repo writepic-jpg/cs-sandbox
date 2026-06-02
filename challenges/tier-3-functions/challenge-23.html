@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge #23 | Parsons Sandbox</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#171717] text-neutral-200 min-h-screen flex flex-col justify-between selection:bg-amber-700 selection:text-white relative overflow-x-hidden">
+    
+    <header class="border-b border-neutral-800 bg-[#212121] px-6 py-4 shadow-md">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="flex items-center gap-2">
+                <a href="../../challenges-hub.html" class="text-xs font-bold text-neutral-400 hover:text-amber-500 transition mr-2">← HUB</a>
+                <span class="h-2 w-2 rounded-full bg-amber-600"></span>
+                <h1 class="text-lg font-bold tracking-tight text-neutral-100">OCR CS <span class="text-amber-500 font-medium">Parsons Sandbox</span></h1>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <div class="bg-[#2a2a2a] border border-neutral-800 px-4 py-2 rounded-lg flex items-center gap-4 text-xs">
+                    <div><span class="text-neutral-400 block text-[10px] uppercase font-bold tracking-wider">CHALLENGE</span><span id="script-title-tag" class="font-semibold text-neutral-200 font-mono">#23_coin_calculator.py</span></div>
+                    <div class="h-8 w-[1px] bg-neutral-800"></div>
+                    <div><span class="text-neutral-400 block text-[10px] uppercase font-bold tracking-wider">STREAK SCORE</span><span id="score-display" class="font-bold text-amber-500 text-sm font-mono">000</span></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <section class="lg:col-span-4 flex flex-col gap-4">
+            <div class="bg-[#212121] border border-neutral-800 rounded-xl p-5 shadow-sm">
+                <h2 id="tier-tag" class="text-[10px] font-bold uppercase tracking-widest text-amber-500 mb-2">Tier 3: Hard</h2>
+                <h3 id="puzzle-heading" class="text-lg font-semibold text-neutral-100 mb-3">Coin Calculator</h3>
+                <p id="puzzle-desc" class="text-sm text-neutral-400 leading-relaxed">Deconstruct raw numerical parameters using mathematical division operations to split values into explicit groupings and dynamic remainders.</p>
+            </div>
+
+            <div class="bg-[#212121] border border-neutral-800 rounded-xl p-5 shadow-sm border-l-4 border-l-amber-500/40">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-xs">📋</span>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-300">Examiner Marking Notes</h4>
+                </div>
+                <ul class="text-xs text-neutral-400 space-y-2 list-disc list-inside">
+                    <li><strong class="text-amber-400/90">Integer Division:</strong> <code class="font-mono text-amber-200/80">DIV</code> is the correct ERL operator for finding the number of whole coins, while <code class="font-mono text-amber-200/80">MOD</code> finds the remainder. Using <code class="font-mono text-amber-200/80">/</code> would result in a real number, which is a logic error in this context.</li>
+                    <li><strong class="text-amber-400/90">Concatenation:</strong> Combine data and strings inside outputs smoothly using a addition symbol (<code class="font-mono text-amber-200/80">+</code>). Dot operators (<code class="font-mono text-amber-200/80">.</code>) are not part of standard J277 syntax rules.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="lg:col-span-8 flex flex-col gap-4">
+            <div class="bg-[#212121] border border-neutral-800 rounded-t-xl px-4 py-3 flex justify-between items-center shadow-sm">
+                <span class="text-xs text-neutral-500 font-mono">student_attempt.py</span>
+                <button onclick="initWorkspace()" class="text-xs text-neutral-400 hover:text-amber-500 transition-colors cursor-pointer">Reset Workspace</button>
+            </div>
+            <div id="parsons-workspace" class="bg-[#1e1e1e] border-x border-b border-neutral-800 rounded-b-xl p-4 min-h-[300px] flex flex-col gap-2 shadow-inner"></div>
+            <div id="feedback-panel" class="hidden rounded-xl p-4 border text-sm transition-all duration-300"></div>
+            <div class="flex items-center justify-end gap-4 mt-2">
+                <button id="action-btn" onclick="checkAnswer()" class="w-full sm:w-auto px-6 py-3 bg-amber-600 hover:bg-amber-700 text-neutral-900 font-bold rounded-xl text-xs uppercase tracking-wide cursor-pointer">Verify Code Alignment</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-neutral-800 bg-[#1a1a1a] py-4 text-center text-xs text-neutral-500 font-mono">OCR CS REVISION ZONE</footer>
+
+<script>
+    const challengeData = {
+        id: "challenge-23",
+        fileName: "#23_coin_calculator.py",
+        tier: "Tier 3: Hard",
+        title: "Coin Calculator",
+        description: "Input an initial value in pence and a single coin type denominator. Evaluate the integer division tracking total whole coins, determine the modulo remainder, and print both values.",
+        correctOrder: [
+            { text: "amount = INPUT(\"Enter amount in pence: \")", indent: 0 },
+            { text: "coinValue = INPUT(\"Enter coin type (e.g. 50): \")", indent: 0 },
+            { text: "numCoins = amount DIV coinValue", indent: 0 },
+            { text: "remaining = amount MOD coinValue", indent: 0 },
+            { text: "OUTPUT \"Number of coins: \" + numCoins", indent: 0 },
+            { text: "OUTPUT \"Change remaining: \" + remaining", indent: 0 }
+        ],
+        scrambledLines: [
+            { id: "l23-b0", text: "amount = INPUT(\"Enter amount in pence: \")" },
+            { id: "l23-b1", text: "coinValue = INPUT(\"Enter coin type (e.g. 50): \")" },
+            { id: "l23-b2", text: "numCoins = amount DIV coinValue" },
+            { id: "l23-b3", text: "numCoins = amount / coinValue" }, // Distractor
+            { id: "l23-b4", text: "remaining = amount MOD coinValue" },
+            { id: "l23-b5", text: "remaining == amount MOD coinValue" }, // Distractor
+            { id: "l23-b6", text: "OUTPUT \"Number of coins: \" + numCoins" },
+            { id: "l23-b7", text: "OUTPUT \"Coins: \" . numCoins" }, // Distractor
+            { id: "l23-b8", text: "OUTPUT \"Change remaining: \" + remaining" }
+        ]
+    };
+</script>
+<script src="../../assets/js/engine.js"></script>
+</body>
+</html>

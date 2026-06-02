@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge #32 | Parsons Sandbox</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#171717] text-neutral-200 min-h-screen flex flex-col justify-between selection:bg-amber-700 selection:text-white relative overflow-x-hidden">
+    
+    <header class="border-b border-neutral-800 bg-[#212121] px-6 py-4 shadow-md">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="flex items-center gap-2">
+                <a href="../../challenges-hub.html" class="text-xs font-bold text-neutral-400 hover:text-amber-500 transition mr-2">← HUB</a>
+                <span class="h-2 w-2 rounded-full bg-amber-600"></span>
+                <h1 class="text-lg font-bold tracking-tight text-neutral-100">OCR CS <span class="text-amber-500 font-medium">Parsons Sandbox</span></h1>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <div class="bg-[#2a2a2a] border border-neutral-800 px-4 py-2 rounded-lg flex items-center gap-4 text-xs">
+                    <div><span class="text-neutral-400 block text-[10px] uppercase font-bold tracking-wider">CHALLENGE</span><span id="script-title-tag" class="font-semibold text-neutral-200 font-mono">#32_savings_interest.py</span></div>
+                    <div class="h-8 w-[1px] bg-neutral-800"></div>
+                    <div><span class="text-neutral-400 block text-[10px] uppercase font-bold tracking-wider">STREAK SCORE</span><span id="score-display" class="font-bold text-amber-500 text-sm font-mono">000</span></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <section class="lg:col-span-4 flex flex-col gap-4">
+            <div class="bg-[#212121] border border-neutral-800 rounded-xl p-5 shadow-sm">
+                <h2 id="tier-tag" class="text-[10px] font-bold uppercase tracking-widest text-amber-500 mb-2">Tier 2: Intermediate</h2>
+                <h3 id="puzzle-heading" class="text-lg font-semibold text-neutral-100 mb-3">Savings Interest</h3>
+                <p id="puzzle-desc" class="text-sm text-neutral-400 leading-relaxed">Implement a definite loop framework calculating floating points values and outputting records for multiple banking rates sequentially.</p>
+            </div>
+
+            <div class="bg-[#212121] border border-neutral-800 rounded-xl p-5 shadow-sm border-l-4 border-l-amber-500/40">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-xs">📋</span>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-300">Examiner Marking Notes</h4>
+                </div>
+                <ul class="text-xs text-neutral-400 space-y-2 list-disc list-inside">
+                    <li><strong class="text-amber-400/90">Division Standard:</strong> Calculating percentage values requires floating-point precision division via the forward slash operator (<code class="font-mono text-amber-200/80">/</code>). Integer division operations drop fractional segments.</li>
+                    <li><strong class="text-amber-400/90">Loop Closures:</strong> All structures utilizing <code class="font-mono text-amber-200/80">FOR</code> loop definitions inside Exam Reference Language require matching <code class="font-mono text-amber-200/80">NEXT</code> closure elements indicating the precise loop tracker tracking variable.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="lg:col-span-8 flex flex-col gap-4">
+            <div class="bg-[#212121] border border-neutral-800 rounded-t-xl px-4 py-3 flex justify-between items-center shadow-sm">
+                <span class="text-xs text-neutral-500 font-mono">student_attempt.py</span>
+                <button onclick="initWorkspace()" class="text-xs text-neutral-400 hover:text-amber-500 transition-colors cursor-pointer">Reset Workspace</button>
+            </div>
+            <div id="parsons-workspace" class="bg-[#1e1e1e] border-x border-b border-neutral-800 rounded-b-xl p-4 min-h-[300px] flex flex-col gap-2 shadow-inner"></div>
+            <div id="feedback-panel" class="hidden rounded-xl p-4 border text-sm transition-all duration-300"></div>
+            <div class="flex items-center justify-end gap-4 mt-2">
+                <button id="action-btn" onclick="checkAnswer()" class="w-full sm:w-auto px-6 py-3 bg-amber-600 hover:bg-amber-700 text-neutral-900 font-bold rounded-xl text-xs uppercase tracking-wide cursor-pointer">Verify Code Alignment</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-neutral-800 bg-[#1a1a1a] py-4 text-center text-xs text-neutral-500 font-mono">OCR CS REVISION ZONE</footer>
+
+<script>
+    const challengeData = {
+        id: "challenge-32",
+        fileName: "#32_savings_interest.py",
+        tier: "Tier 2: Intermediate",
+        title: "Savings Interest",
+        description: "Capture foundational savings totals and total comparison counts through input vectors. Run a FOR loop executing across all target elements, querying custom integer percentage interest indexes inside and generating final aggregate math totals.",
+        correctOrder: [
+            { text: "savings = INPUT(\"Enter amount to save: \")", indent: 0 },
+            { text: "numAccounts = INPUT(\"How many accounts? \")", indent: 0 },
+            { text: "FOR i = 1 TO numAccounts", indent: 0 },
+            { text: "rate = INPUT(\"Enter interest rate: \")", indent: 1 },
+            { text: "interest = (savings / 100) * rate", indent: 1 },
+            { text: "total = savings + interest", indent: 1 },
+            { text: "OUTPUT total", indent: 1 },
+            { text: "NEXT i", indent: 0 }
+        ],
+        scrambledLines: [
+            { id: "l32-b0", text: "savings = INPUT(\"Enter amount to save: \")" },
+            { id: "l32-b1", text: "numAccounts = INPUT(\"How many accounts? \")" },
+            { id: "l32-b2", text: "FOR i = 1 TO numAccounts" },
+            { id: "l32-b3", text: "rate = INPUT(\"Enter interest rate: \")" },
+            { id: "l32-b4", text: "interest = (savings / 100) * rate" },
+            { id: "l32-b5", text: "interest = (savings DIV 100) * rate" }, 
+            { id: "l32-b6", text: "total = savings + interest" },
+            { id: "l32-b7", text: "OUTPUT total" },
+            { id: "l32-b8", text: "NEXT i" },
+            { id: "l32-b9", text: "NEXT" } 
+        ]
+    };
+</script>
+<script src="../../assets/js/engine.js"></script>
+</body>
+</html>
