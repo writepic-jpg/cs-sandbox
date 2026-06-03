@@ -311,5 +311,27 @@ function renderPaypalCheckout() {
     }).render('#paypal-button-container');
 }
 
+// --- NEW MOBILE BURGER MENU LOGIC ---
+document.addEventListener('DOMContentLoaded', () => {
+    const burgerBtn = document.getElementById('burger-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    // Safety check: ensure buttons exist on the page before attaching listeners
+    if (burgerBtn && mobileMenu) {
+        burgerBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
+
+        // Close when clicking a link
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+            });
+        });
+    }
+});
+
 // Global bootstrap activation hook
 document.addEventListener('DOMContentLoaded', initWorkspace);
