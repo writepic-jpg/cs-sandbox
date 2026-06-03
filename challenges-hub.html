@@ -27,6 +27,7 @@
             background: #242424;
             transform: translateY(-2px);
         }
+        /* The active state is now cleanly handled here without overwriting Tailwind */
         .tab-btn.active-tier { 
             background-color: rgba(180, 83, 9, 0.15); 
             color: #f59e0b; 
@@ -51,19 +52,19 @@
 
     <!-- HUB SELECTION CORE GRID -->
     <main class="max-w-6xl mx-auto px-6 py-10 flex-grow w-full space-y-8">
-        
-        <div class="grid grid-cols-3 gap-3 bg-[#212121] p-2 rounded-xl border border-neutral-800 max-w-2xl mx-auto">
-            <button onclick="switchTab('easy')" id="btn-easy" class="tab-btn py-3 rounded-lg font-bold text-xs uppercase tracking-wider border border-transparent transition text-neutral-400 hover:text-neutral-200 cursor-pointer">
+        <!-- FIXED RESPONSIVE BUTTON CONTAINER -->
+        <div class="flex flex-wrap justify-center gap-2 bg-[#212121] p-2 rounded-xl border border-neutral-800 max-w-2xl mx-auto w-full">
+            <button onclick="switchTab('easy')" id="btn-easy" class="tab-btn flex-[1_1_120px] py-3 px-4 rounded-lg font-bold text-xs uppercase tracking-wider border border-transparent transition text-neutral-400 hover:text-neutral-200 cursor-pointer text-center whitespace-nowrap">
                 Easy (Tier 1)
             </button>
-            <button onclick="switchTab('med')" id="btn-med" class="tab-btn py-3 rounded-lg font-bold text-xs uppercase tracking-wider border border-transparent transition text-neutral-400 hover:text-neutral-200 cursor-pointer">
+            <button onclick="switchTab('med')" id="btn-med" class="tab-btn flex-[1_1_120px] py-3 px-4 rounded-lg font-bold text-xs uppercase tracking-wider border border-transparent transition text-neutral-400 hover:text-neutral-200 cursor-pointer text-center whitespace-nowrap">
                 Medium (Tier 2)
             </button>
-            <button onclick="switchTab('hard')" id="btn-hard" class="tab-btn py-3 rounded-lg font-bold text-xs uppercase tracking-wider border border-transparent transition text-neutral-400 hover:text-neutral-200 cursor-pointer">
+            <button onclick="switchTab('hard')" id="btn-hard" class="tab-btn flex-[1_1_120px] py-3 px-4 rounded-lg font-bold text-xs uppercase tracking-wider border border-transparent transition text-neutral-400 hover:text-neutral-200 cursor-pointer text-center whitespace-nowrap">
                 Hard (Tier 3)
             </button>
         </div>
-
+        
         <div class="text-center space-y-1 py-2">
             <h2 id="hub-heading" class="text-xl font-bold tracking-tight text-neutral-100">Select a Challenge Container</h2>
             <p id="hub-subheading" class="text-xs text-neutral-400">Click a difficulty filter above to view targeted exam constructs.</p>
@@ -74,7 +75,7 @@
 
         <hr class="border-neutral-800 my-12">
 
-     <!-- CONTACT INTERACTION INTERFACE FORM -->
+        <!-- CONTACT INTERACTION INTERFACE FORM -->
         <section class="max-w-2xl mx-auto bg-[#212121] border border-neutral-800 rounded-2xl p-6 md:p-8 shadow-xl">
             <div class="text-center space-y-2 mb-6">
                 <span class="text-2xl">📬</span>
@@ -92,13 +93,7 @@
 
             <!-- Enhanced Form Interface Linked to Formspree -->
             <form id="hub-contact-form" action="https://formspree.io/f/xwvzdrgb" method="POST" class="space-y-4">
-                <div data-fs-success class="hidden text-xs py-2.5 px-4 rounded-xl border font-mono bg-emerald-950/40 border-emerald-800/60 text-emerald-400 mb-4 animate-fade-  in">
-                ✓ Success: Your message has been sent to hello@verdantlogic.io!
-            </div>
-            <div data-fs-error class="hidden text-xs py-2.5 px-4 rounded-xl border font-mono bg-rose-950/40 border-rose-800/60 text-rose-400 mb-4 animate-fade-in">
-                ⚠️ Dispatch Failure: Form submission rejected by the server gateway.
-            </div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1">
                         <label class="text-[10px] uppercase font-bold tracking-wider text-neutral-400 block font-mono">Full Name</label>
                         <input type="text" name="name" required data-fs-field placeholder="John Doe" class="w-full bg-[#171717] border border-neutral-800 rounded-lg px-4 py-2.5 text-xs text-neutral-200 focus:outline-none focus:border-amber-600 transition">
@@ -155,7 +150,6 @@
     </footer>
 
     <script src="https://www.paypal.com/ncp/payment/BEFYMK3XGVZ5G&currency=GBP"></script>
-   <script src="https://www.paypal.com/ncp/payment/BEFYMK3XGVZ5G&currency=GBP"></script>
     
     <script src="https://unpkg.com/@formspree/ajax@1"></script>
     <script>
@@ -247,9 +241,11 @@
             }
         });
 
+        // FIXED JAVASCRIPT: Uses classList to preserve layout styling
         function switchTab(tier) {
+            // Safely remove the active styling from all buttons
             document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.className = "tab-btn py-3 rounded-lg font-bold text-xs uppercase tracking-wider border border-transparent transition text-neutral-400 hover:text-neutral-200 cursor-pointer";
+                btn.classList.remove('active-tier');
             });
 
             const grid = document.getElementById('cards-grid');
@@ -258,16 +254,17 @@
             
             grid.innerHTML = '';
 
+            // Apply active styling dynamically without destroying existing classes
             if(tier === 'easy') {
-                document.getElementById('btn-easy').className += ' active-tier';
+                document.getElementById('btn-easy').classList.add('active-tier');
                 heading.innerHTML = "🌾 Tier 1: Foundations";
                 sub.innerHTML = "Variables, simple sequencing, basic inputs/outputs, and casting rules.";
             } else if(tier === 'med') {
-                document.getElementById('btn-med').className += ' active-tier';
+                document.getElementById('btn-med').classList.add('active-tier');
                 heading.innerHTML = "🍁 Tier 2: Control Structures";
                 sub.innerHTML = "Selection (IF/ELIF/ELSE branches) and count-controlled iterations (FOR loops).";
             } else {
-                document.getElementById('btn-hard').className += ' active-tier';
+                document.getElementById('btn-hard').classList.add('active-tier');
                 heading.innerHTML = "🦅 Tier 3: Complex Processing";
                 sub.innerHTML = "Condition loops (WHILE), 1D/2D Arrays, and persistent external text file operations.";
             }
@@ -325,11 +322,9 @@
 
         // TRIGGER PREMIUM CONVERSION ROUTINES
         function handlePremiumWall() {
-            // Option A: Pop up the conversion modal immediately
             const modal = document.getElementById('payment-gate-modal');
             modal.classList.remove('hidden');
             
-            // Map payment buttons smoothly
             document.getElementById('stripe-checkout-btn').onclick = () => {
                 window.location.href = "https://buy.stripe.com/5kQbJ0fXGdli5EpgoOew800";
             };
