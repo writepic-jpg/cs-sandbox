@@ -32,7 +32,7 @@
             <div class="bg-[#212121] border border-neutral-800 rounded-xl p-5 shadow-sm">
                 <h2 id="tier-tag" class="text-[10px] font-bold uppercase tracking-widest text-amber-500 mb-2">Tier 2: Intermediate</h2>
                 <h3 id="puzzle-heading" class="text-lg font-semibold text-neutral-100 mb-3">Guessing Game</h3>
-                <p id="puzzle-desc" class="text-sm text-neutral-400 leading-relaxed">Incorporate native random number generation libraries into logical selection branching states.</p>
+                <p id="puzzle-desc" class="text-sm text-neutral-400 leading-relaxed">Generate a random hidden target number between 1 and 10 inclusively. Request a guess from the user. If they match the random secret target, output 'Correct', otherwise output 'Not what I was thinking'. Watch out for distractors!</p>
             </div>
 
             <div class="bg-[#212121] border border-neutral-800 rounded-xl p-5 shadow-sm border-l-4 border-l-amber-500/40">
@@ -41,9 +41,9 @@
                     <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-300">Examiner Marking Notes</h4>
                 </div>
                 <ul class="text-xs text-neutral-400 space-y-2 list-disc list-inside">
-                    <li><strong class="text-amber-400/90">Random Syntax:</strong> In OCR Exam Reference Language (ERL), generating an inclusive integer requires the lower-case <code class="font-mono text-amber-200/80">random(x, y)</code> library component form.</li>
-                    <li><strong class="text-amber-400/90">Comparison Operators:</strong> Remember that assigning a value requires a single <code class="font-mono text-amber-200/80">=</code>, but evaluation inside an <code class="font-mono text-amber-200/80">IF</code> block condition demands a double <code class="font-mono text-amber-200/80">==</code>.</li>
-                    <li><strong class="text-amber-400/90">Block Termination:</strong> Ensure your entire conditional construct finishes neatly with a closed <code class="font-mono text-amber-200/80">ENDIF</code> token keyword.</li>
+                    <li><strong class="text-amber-400/90">Distractors:</strong> Watch out for sneaky syntax errors. Bin (🗑️) blocks that are incorrect!</li>
+                    <li><strong class="text-amber-400/90">Comparison Operator:</strong> Exam Reference Language strictly uses <code class="font-mono text-amber-200/80">==</code> for comparisons and <code class="font-mono text-amber-200/80">=</code> for assignment.</li>
+                    <li><strong class="text-amber-400/90">Keywords:</strong> Check your compound keywords carefully; space placement matters!</li>
                 </ul>
             </div>
         </section>
@@ -54,7 +54,7 @@
                 <button onclick="initWorkspace()" class="text-xs text-neutral-400 hover:text-amber-500 transition-colors cursor-pointer">Reset Workspace</button>
             </div>
             <div id="parsons-workspace" class="bg-[#1e1e1e] border-x border-b border-neutral-800 rounded-b-xl p-4 min-h-[250px] flex flex-col gap-2 shadow-inner"></div>
-            <div id="feedback-panel" class="hidden rounded-xl p-4 border text-sm transition-all duration-300"></div>
+            <div id="feedback-panel" class="hidden rounded-xl p-4 border text-sm transition-all duration-300 mt-2"></div>
             <div class="flex items-center justify-end gap-4 mt-2">
                 <button id="action-btn" onclick="checkAnswer()" class="w-full sm:w-auto px-6 py-3 bg-amber-600 hover:bg-amber-700 text-neutral-900 font-bold rounded-xl text-xs uppercase tracking-wide cursor-pointer">Verify Code Alignment</button>
             </div>

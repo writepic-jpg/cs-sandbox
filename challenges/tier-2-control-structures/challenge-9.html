@@ -41,8 +41,9 @@
                     <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-300">Examiner Marking Notes</h4>
                 </div>
                 <ul class="text-xs text-neutral-400 space-y-2 list-disc list-inside">
+                    <li><strong class="text-amber-400/90">Distractors:</strong> Some blocks may contain syntax errors. Bin (🗑️) blocks that are not required!</li>
                     <li><strong class="text-amber-400/90">Modulus Operator:</strong> Python utilizes the <code class="font-mono text-amber-200/80">%</code> operator to find remainders.</li>
-                    <li><strong class="text-amber-400/90">Indentation Blocks:</strong> Code lines belonging inside the <code class="font-mono text-amber-200/80">if</code> or <code class="font-mono text-amber-200/80">else</code> structural tree must be indented exactly 1 level rightward (<code class="font-mono text-amber-200/80">&rsaquo;</code> button).</li>
+                    <li><strong class="text-amber-400/90">Indentation:</strong> Code inside structural trees must be indented 1 level rightward (<code class="font-mono text-amber-200/80">&rsaquo;</code>).</li>
                 </ul>
             </div>
         </section>
@@ -53,7 +54,7 @@
                 <button onclick="initWorkspace()" class="text-xs text-neutral-400 hover:text-amber-500 transition-colors cursor-pointer">Reset Workspace</button>
             </div>
             <div id="parsons-workspace" class="bg-[#1e1e1e] border-x border-b border-neutral-800 rounded-b-xl p-4 min-h-[250px] flex flex-col gap-2 shadow-inner"></div>
-            <div id="feedback-panel" class="hidden rounded-xl p-4 border text-sm transition-all duration-300"></div>
+            <div id="feedback-panel" class="hidden rounded-xl p-4 border text-sm transition-all duration-300 mt-2"></div>
             <div class="flex items-center justify-end gap-4 mt-2">
                 <button id="action-btn" onclick="checkAnswer()" class="w-full sm:w-auto px-6 py-3 bg-amber-600 hover:bg-amber-700 text-neutral-900 font-bold rounded-xl text-xs uppercase tracking-wide cursor-pointer">Verify Code Alignment</button>
             </div>
@@ -68,7 +69,7 @@
         fileName: "#09_odd_or_even.py",
         tier: "Tier 2: Intermediate",
         title: "Odd or Even",
-        description: "Ask the user to enter a whole number. If the number is perfectly divisible by 2, output 'Even'. Otherwise, output 'Odd'. Remember to properly indent the print logic blocks!",
+        description: "Ask the user to enter a whole number. If the number is perfectly divisible by 2, output 'Even'. Otherwise, output 'Odd'. Remember to properly indent the print logic blocks! Use the 'trash' icon if the line isn't needed.",
         correctOrder: [
             { text: "num = int(input(\"Enter a number: \"))", indent: 0 },
             { text: "if num % 2 == 0:", indent: 0 },
@@ -80,8 +81,9 @@
             { id: "l9-b0", text: "else:" },
             { id: "l9-b1", text: "print(\"Even\")" },
             { id: "l9-b2", text: "num = int(input(\"Enter a number: \"))" },
-            { id: "l9-b3", text: "print(\"Odd\")" },
-            { id: "l9-b4", text: "if num % 2 == 0:" }
+            { id: "l9-b3", text: "if num % 2 = 0:" }, // Single equals syntax error distractor
+            { id: "l9-b4", text: "print(\"Odd\")" },
+            { id: "l9-b5", text: "if num % 2 == 0:" }
         ]
     };
 </script>

@@ -56,15 +56,6 @@ function updateScoreDisplay() {
     localStorage.setItem('parsons_streak_score', userScore); 
 }
 
-// Clears red/green validation styling upon user interaction
-function resetHighlights() {
-    document.querySelectorAll('.code-card').forEach(card => {
-        card.classList.remove('border-green-600', 'bg-green-950/10', 'border-red-600', 'bg-red-950/10');
-    });
-    const panel = document.getElementById('feedback-panel');
-    if(panel) panel.classList.add('hidden');
-}
-
 // Workspace DOM Assembly Engine
 function initWorkspace() { 
     if (typeof challengeData === 'undefined') {
@@ -73,8 +64,8 @@ function initWorkspace() {
     }
 
     updateScoreDisplay(); 
-    resetHighlights();
     
+    // Sync current dynamic textual layout context cards
     if (document.getElementById('script-title-tag')) document.getElementById('script-title-tag').innerText = challengeData.fileName;
     if (document.getElementById('tier-tag')) document.getElementById('tier-tag').innerText = challengeData.tier;
     if (document.getElementById('puzzle-heading')) document.getElementById('puzzle-heading').innerText = challengeData.title;
@@ -100,83 +91,24 @@ function createCodeBlockNode(id, text) {
     row.id = id; 
     row.className = "parsons-row-container flex items-center gap-3 p-1 rounded-lg group transition-all duration-150 touch-none select-none"; 
     row.setAttribute("data-indent", "0"); 
-    row.setAttribute("data-binned", "false"); 
-    
-    const safeText = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
     row.innerHTML = `
-        <div class="drag-controls flex items-center gap-1 opacity-20 group-hover:opacity-100 transition-opacity">
+        <div class="flex items-center gap-1 opacity-20 group-hover:opacity-100 transition-opacity">
             <button onclick="changeIndentation('${id}', -1)" class="w-5 h-5 flex items-center justify-center bg-neutral-800 text-neutral-400 rounded text-xs font-bold hover:bg-neutral-700 cursor-pointer">&lsaquo;</button>
             <button onclick="changeIndentation('${id}', 1)" class="w-5 h-5 flex items-center justify-center bg-neutral-800 text-neutral-400 rounded text-xs font-bold hover:bg-neutral-700 cursor-pointer">&rsaquo;</button>
         </div>
-        <div draggable="true" class="code-card flex-grow flex items-center justify-between bg-[#262626] border border-neutral-800 rounded-lg py-2.5 px-4 cursor-grab active:cursor-grabbing border-l-4 border-l-amber-600/20 hover:border-l-amber-500 select-none transition-all">
-            <div class="flex items-center overflow-x-auto whitespace-nowrap mr-2">
-                <span class="text-neutral-600 select-none mr-3 text-xs">☰</span>
-                <span class="code-font text-amber-100 text-xs select-none tracking-wide">${safeText}</span>
-            </div>
-            <button onclick="toggleBin('${id}')" class="bin-btn flex-shrink-0 p-1.5 rounded text-xs transition-colors bg-neutral-800 text-neutral-400 hover:bg-red-950/50 hover:text-red-400 border border-transparent z-10 cursor-pointer" title="Send to Bin">
-                🗑️
-            </button>
+        <div draggable="true" class="flex-grow flex items-center bg-[#262626] border border-neutral-800 text-amber-100 rounded-lg py-2.5 px-4 cursor-grab active:cursor-grabbing border-l-4 border-l-amber-600/20 hover:border-l-amber-500 select-none">
+            <span class="text-neutral-600 select-none mr-3 text-xs">☰</span>
+            <span class="code-font text-xs whitespace-pre select-none">${text}</span>
         </div>`; 
     
+    // Inject mobile touch listener registration directly into node lifecycle
     setupTouchContext(row);
     return row; 
 }
 
-function toggleBin(id) {
-    const row = document.getElementById(id);
-    if (!row) return;
-    
-    resetHighlights();
-    const isBinned = row.getAttribute('data-binned') === 'true';
-    
-    const card = row.querySelector('.code-card');
-    const textSpan = row.querySelector('.code-font');
-    const dragControls = row.querySelector('.drag-controls');
-    const binBtn = row.querySelector('.bin-btn');
-
-    if (!isBinned) {
-        // Bin the block
-        row.setAttribute('data-binned', 'true');
-        row.setAttribute('data-indent', '0');
-        row.style.paddingLeft = '0rem';
-        
-        card.setAttribute('draggable', 'false');
-        card.classList.remove('bg-[#262626]', 'border-l-amber-600/20', 'hover:border-l-amber-500', 'cursor-grab', 'active:cursor-grabbing');
-        card.classList.add('opacity-40', 'bg-neutral-950/40');
-        
-        textSpan.classList.remove('text-amber-100');
-        textSpan.classList.add('line-through', 'text-neutral-500');
-        dragControls.classList.add('invisible');
-        
-        binBtn.innerHTML = '🔄';
-        binBtn.title = "Restore Block";
-        binBtn.classList.remove('bg-neutral-800', 'text-neutral-400', 'hover:bg-red-950/50', 'hover:text-red-400');
-        binBtn.classList.add('bg-amber-900/40', 'text-amber-500', 'border-amber-700/50', 'hover:bg-amber-900/60');
-    } else {
-        // Restore the block
-        row.setAttribute('data-binned', 'false');
-        
-        card.setAttribute('draggable', 'true');
-        card.classList.remove('opacity-40', 'bg-neutral-950/40');
-        card.classList.add('bg-[#262626]', 'border-l-amber-600/20', 'hover:border-l-amber-500', 'cursor-grab', 'active:cursor-grabbing');
-        
-        textSpan.classList.add('text-amber-100');
-        textSpan.classList.remove('line-through', 'text-neutral-500');
-        dragControls.classList.remove('invisible');
-        
-        binBtn.innerHTML = '🗑️';
-        binBtn.title = "Send to Bin";
-        binBtn.classList.add('bg-neutral-800', 'text-neutral-400', 'hover:bg-red-950/50', 'hover:text-red-400');
-        binBtn.classList.remove('bg-amber-900/40', 'text-amber-500', 'border-amber-700/50', 'hover:bg-amber-900/60');
-    }
-}
-
 function changeIndentation(id, dir) { 
     const el = document.getElementById(id); 
-    if (!el || el.getAttribute('data-binned') === 'true') return;
-    
-    resetHighlights();
+    if (!el) return;
     let current = Math.max(0, Math.min(4, parseInt(el.getAttribute('data-indent'), 10) + dir)); 
     el.setAttribute('data-indent', current); 
     el.style.paddingLeft = `${current * 1.5}rem`; 
@@ -185,18 +117,12 @@ function changeIndentation(id, dir) {
 
 function checkDropPlacementMatch(el) { 
     const workspace = document.getElementById('parsons-workspace');
-    if (!workspace || el.getAttribute('data-binned') === 'true') return;
-    
-    // Only verify against active rows for sound effects
-    const activeRows = Array.from(workspace.children).filter(r => r.getAttribute('data-binned') !== 'true');
-    const idx = activeRows.indexOf(el); 
-    
+    if (!workspace) return;
+    const idx = Array.from(workspace.children).indexOf(el); 
     if (challengeData.correctOrder[idx] && el.querySelector('.code-font')) {
-        const currentText = el.querySelector('.code-font').innerText.trim().replace(/"/g, "'");
-        const matchText = challengeData.correctOrder[idx].text.trim().replace(/"/g, "'");
+        const currentText = el.querySelector('.code-font').innerText;
         const currentIndent = parseInt(el.getAttribute('data-indent'), 10);
-        
-        if (matchText === currentText && challengeData.correctOrder[idx].indent === currentIndent) {
+        if (challengeData.correctOrder[idx].text === currentText && challengeData.correctOrder[idx].indent === currentIndent) {
             playNudgeSound(); 
         }
     }
@@ -205,12 +131,7 @@ function checkDropPlacementMatch(el) {
 // Desktop Drag and Drop Engine
 function setupDragAndDropContext(container) { 
     container.addEventListener('dragstart', (e) => { 
-        activeDraggedElement = e.target.closest('.parsons-row-container');
-        if (activeDraggedElement?.getAttribute('data-binned') === 'true') {
-            e.preventDefault();
-            return;
-        }
-        resetHighlights();
+        activeDraggedElement = e.target.closest('.parsons-row-container'); 
         activeDraggedElement?.classList.add('opacity-30'); 
     }); 
     container.addEventListener('dragend', () => { 
@@ -236,13 +157,13 @@ function setupDragAndDropContext(container) {
 function setupTouchContext(rowElement) {
     rowElement.addEventListener('touchstart', (e) => {
         const row = e.target.closest('.parsons-row-container');
-        if (!row || row.getAttribute('data-binned') === 'true') return;
+        if (!row) return;
         
-        resetHighlights();
         activeTouchElement = row;
         touchStartY = e.touches[0].clientY;
         
-        const dragCard = row.querySelector('.code-card');
+        // Apply temporary high-contrast dragging styles
+        const dragCard = row.querySelector('div[draggable="true"]');
         if (dragCard) {
             dragCard.classList.remove('border-neutral-800');
             dragCard.classList.add('border-amber-500', 'bg-neutral-800', 'scale-[1.01]', 'shadow-2xl');
@@ -251,15 +172,19 @@ function setupTouchContext(rowElement) {
 
     rowElement.addEventListener('touchmove', (e) => {
         if (!activeTouchElement) return;
+        
+        // Prevent entire mobile browser viewport from pulling/scrolling down while sorting
         e.preventDefault(); 
         
         const currentY = e.touches[0].clientY;
         const workspace = document.getElementById('parsons-workspace');
         if (!workspace) return;
         
+        // Collect alternative adjacent rows to process positional geometry
         const siblingRows = Array.from(workspace.querySelectorAll('.parsons-row-container'))
                                 .filter(item => item !== activeTouchElement);
                                 
+        // Identify targeted vertical intersection row node bounds
         const targetRow = siblingRows.find(item => {
             const box = item.getBoundingClientRect();
             return currentY >= box.top && currentY <= box.bottom;
@@ -268,6 +193,7 @@ function setupTouchContext(rowElement) {
         if (targetRow) {
             const box = targetRow.getBoundingClientRect();
             const middle = box.top + box.height / 2;
+            
             if (currentY < middle) {
                 targetRow.before(activeTouchElement);
             } else {
@@ -279,7 +205,8 @@ function setupTouchContext(rowElement) {
     rowElement.addEventListener('touchend', () => {
         if (!activeTouchElement) return;
         
-        const dragCard = activeTouchElement.querySelector('.code-card');
+        // Restore standard structural design configurations
+        const dragCard = activeTouchElement.querySelector('div[draggable="true"]');
         if (dragCard) {
             dragCard.classList.remove('border-amber-500', 'bg-neutral-800', 'scale-[1.01]', 'shadow-2xl');
             dragCard.classList.add('border-neutral-800');
@@ -294,39 +221,13 @@ function setupTouchContext(rowElement) {
 function checkAnswer() { 
     const workspace = document.getElementById('parsons-workspace');
     if (!workspace) return;
-    
-    const allRows = Array.from(workspace.children); 
-    const activeRows = allRows.filter(row => row.getAttribute('data-binned') !== 'true');
-    const panel = document.getElementById('feedback-panel'); 
-    
-    // Check if the user binned the correct number of items
-    if (activeRows.length !== challengeData.correctOrder.length) {
-        userScore = 0; 
-        updateScoreDisplay(); 
-        playAudioTone(220, 0.35, 'sawtooth'); 
-        
-        if (panel) {
-            panel.classList.remove('hidden');
-            panel.className = "rounded-xl p-4 border border-red-900/60 bg-red-950/20 text-red-400 text-xs mt-2"; 
-            panel.innerHTML = `<strong>❌ Incorrect block count.</strong> You either kept distractor blocks active or binned necessary lines!`; 
-        }
-        
-        // Highlight active blocks in red to indicate error
-        activeRows.forEach(row => {
-            row.querySelector('.code-card').classList.add('border-red-600', 'bg-red-950/10');
-        });
-        return;
-    }
-
+    const rows = Array.from(workspace.children); 
     let isPerfect = true; 
     
-    // Verify sequence & logic using normalized text matching
-    activeRows.forEach((row, idx) => { 
+    rows.forEach((row, idx) => { 
         const codeFontEl = row.querySelector('.code-font');
-        const inner = row.querySelector('.code-card');
+        const inner = row.querySelector('div[draggable="true"]');
         if (!codeFontEl || !inner) return;
-
-        inner.classList.remove('border-green-600', 'bg-green-950/10', 'border-red-600', 'bg-red-950/10');
 
         const text = codeFontEl.innerText.trim();
         const indent = parseInt(row.getAttribute('data-indent'), 10);
@@ -336,16 +237,19 @@ function checkAnswer() {
         const normalizedMatch = match ? match.text.trim().replace(/"/g, "'") : "";
         
         if (match && normalizedMatch === normalizedText && match.indent === indent) {
+            inner.classList.remove('border-neutral-800', 'border-red-600', 'bg-red-950/10');
             inner.classList.add('border-green-600', 'bg-green-950/10'); 
         } else { 
             isPerfect = false; 
+            inner.classList.remove('border-neutral-800', 'border-green-600', 'bg-green-950/10');
             inner.classList.add('border-red-600', 'bg-red-950/10'); 
         } 
     }); 
     
+    const panel = document.getElementById('feedback-panel'); 
     if (panel) panel.classList.remove('hidden'); 
     
-    if (isPerfect) { 
+    if (isPerfect && rows.length === challengeData.correctOrder.length) { 
         if (!hasScoredThisSession) { 
             userScore += 100; 
             hasScoredThisSession = true; 
@@ -362,8 +266,8 @@ function checkAnswer() {
         }
         
         if (panel) {
-            panel.className = "rounded-xl p-4 border border-green-800 bg-green-950/20 text-green-400 text-xs mt-2"; 
-            panel.innerHTML = `<strong>🎉 Perfect Sequence Execution!</strong> The structure perfectly fulfills the logic parameters.`; 
+            panel.className = "rounded-xl p-4 border border-green-800 bg-green-950/20 text-green-400 text-xs"; 
+            panel.innerHTML = `<strong>Perfect Sequence Execution!</strong>`; 
         }
     } else { 
         userScore = 0; 
@@ -372,13 +276,13 @@ function checkAnswer() {
         playAudioTone(220, 0.35, 'sawtooth'); 
         
         if (panel) {
-            panel.className = "rounded-xl p-4 border border-red-900/60 bg-red-950/20 text-red-400 text-xs mt-2"; 
-            panel.innerHTML = `<strong>❌ Logic Compilation Mismatch.</strong> Check your sequencing or functional nested block layouts.`; 
+            panel.className = "rounded-xl p-4 border border-red-900/60 bg-red-950/20 text-red-400 text-xs"; 
+            panel.innerHTML = `<strong>Logic Compilation Mismatch.</strong>`; 
         }
     } 
 }
 
-// --- PAYPAL CHECKOUT ARCHITECTURE RUNTIME ---
+// PAYPAL CHECKOUT ARCHITECTURE RUNTIME
 function renderPaypalCheckout() {
     const btnContainer = document.getElementById('paypal-button-container');
     if (!btnContainer) return;
@@ -412,12 +316,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const burgerBtn = document.getElementById('burger-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     
+    // Safety check: ensure buttons exist on the page before attaching listeners
     if (burgerBtn && mobileMenu) {
         burgerBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
             mobileMenu.classList.toggle('flex');
         });
 
+        // Close when clicking a link
         mobileMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');

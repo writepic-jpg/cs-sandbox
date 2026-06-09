@@ -32,7 +32,7 @@
             <div class="bg-[#212121] border border-neutral-800 rounded-xl p-5 shadow-sm">
                 <h2 id="tier-tag" class="text-[10px] font-bold uppercase tracking-widest text-amber-500 mb-2">Tier 2: Intermediate</h2>
                 <h3 id="puzzle-heading" class="text-lg font-semibold text-neutral-100 mb-3">Holiday Allowance</h3>
-                <p id="puzzle-desc" class="text-sm text-neutral-400 leading-relaxed">Perform relative data point arithmetic transformations inside explicit algorithmic selection structures.</p>
+                <p id="puzzle-desc" class="text-sm text-neutral-400 leading-relaxed">Calculate a worker's holiday allowance based on how many days a week they work using Exam Reference Language. Watch out for distractors and bin the incorrect lines!</p>
             </div>
 
             <div class="bg-[#212121] border border-neutral-800 rounded-xl p-5 shadow-sm border-l-4 border-l-amber-500/40">
@@ -41,8 +41,9 @@
                     <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-300">Examiner Marking Notes</h4>
                 </div>
                 <ul class="text-xs text-neutral-400 space-y-2 list-disc list-inside">
-                    <li><strong class="text-amber-400/90">String Concat:</strong> In Exam Reference Language, joining data outputs cleanly together is managed via the <code class="font-mono text-amber-200/80">+</code> addition configuration operator.</li>
-                    <li><strong class="text-amber-400/90">Mathematical Allocation:</strong> Assignment strings follow an execution direction from right to left (<code class="font-mono text-amber-200/80">variable = calculation</code>). Attempting to compute equations directly into a target indicator variable declaration container backwards will cause critical parser failure.</li>
+                    <li><strong class="text-amber-400/90">Distractors:</strong> Watch out for sneaky syntax errors or backward math expressions. Bin (🗑️) blocks that are incorrect!</li>
+                    <li><strong class="text-amber-400/90">String Concat:</strong> In Exam Reference Language, joining data outputs cleanly together is managed via the <code class="font-mono text-amber-200/80">+</code> addition operator.</li>
+                    <li><strong class="text-amber-400/90">Mathematical Allocation:</strong> Assignment expressions evaluate right-to-left (<code class="font-mono text-amber-200/80">variable = calculation</code>). Putting the calculation container on the left side backwards will cause validation failure.</li>
                 </ul>
             </div>
         </section>
@@ -68,7 +69,7 @@
         fileName: "#13_holiday_allowance.py",
         tier: "Tier 2: Intermediate",
         title: "Holiday Allowance",
-        description: "Capture the number of days a student works per week. If they work 5 days, assign their allowance variable to a flat baseline of 28. Otherwise, dynamically evaluate their proportional allocation by dividing their input parameter by 5 and multiplying by 28.",
+        description: "Calculate a worker's holiday allowance based on how many days a week they work using Exam Reference Language. Watch out for distractors and bin the incorrect lines!",
         correctOrder: [
             { text: "daysWorked = INPUT(\"Enter days worked per week: \")", indent: 0 },
             { text: "IF daysWorked == 5 THEN", indent: 0 },
