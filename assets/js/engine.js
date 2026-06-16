@@ -1,7 +1,12 @@
 /**
  * OCR CS Parsons Sandbox - Master Core Runtime Engine
- * Architecture Version: 2.1.0 (Production Hardened)
+ * Architecture Version: 2.2.0 (UX Hardened & Configurable Paywall)
  */
+
+// ==========================================
+// GLOBALS & REVISION PORTAL CONFIGURATION
+// ==========================================
+const FREE_CHALLENGE_LIMIT = 14; // Set to 14 so Challenges 1-14 are completely free; 15+ prompts premium wall
 
 let activeDraggedElement = null;
 let hasScoredThisSession = false;
@@ -24,7 +29,6 @@ function playAudioTone(f, d, t='sine', s=0) {
         g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + s + d); 
         o.connect(g); 
         g.connect(ctx.destination); 
-        o.start(ctx.currentTime + s); 
         o.start(ctx.currentTime + s); 
         o.stop(ctx.currentTime + s + d); 
     } catch(e){} 
@@ -62,6 +66,20 @@ function updateScoreDisplay() {
     localStorage.setItem('parsons_streak_score', userScore); 
 }
 
+// Automatically manages onboarding directions inside the upper workspace
+function updatePlaceholderVisibility() {
+    const ws = document.getElementById('parsons-workspace');
+    const placeholder = document.getElementById('workspace-placeholder');
+    if (ws && placeholder) {
+        const structuralBlocksCount = ws.querySelectorAll('.parsons-row-container').length;
+        if (structuralBlocksCount > 0) {
+            placeholder.classList.add('hidden');
+        } else {
+            placeholder.classList.remove('hidden');
+        }
+    }
+}
+
 // ==========================================
 // 2. WORKSPACE LIFE-CYCLE BOOTSTRAPPER
 // ==========================================
@@ -78,19 +96,20 @@ function initWorkspace() {
     if (document.getElementById('puzzle-heading')) document.getElementById('puzzle-heading').innerText = challengeData.title;
     if (document.getElementById('puzzle-desc')) document.getElementById('puzzle-desc').innerText = challengeData.description;
 
-    // PREMIUM INTEGRATION GATEKEEPER
+    // PREMIUM INTEGRATION GATEKEEPER (Robust Extract Validation)
     const isPremiumUnlocked = localStorage.getItem('_p_sig_o_cs_') !== null;
-    const currentChallengeNum = parseInt(challengeData.id.replace('challenge-', ''), 10);
+    const digitMatch = challengeData.id.match(/\d+/);
+    const currentChallengeNum = digitMatch ? parseInt(digitMatch[0], 10) : 0;
     
-    // Lock challenges above index 10 if premium signature verification token is missing
-    if (currentChallengeNum > 10 && !isPremiumUnlocked) {
+    // Evaluate access rules using configuration bounds
+    if (currentChallengeNum > FREE_CHALLENGE_LIMIT && !isPremiumUnlocked) {
         const ws = document.getElementById('parsons-workspace'); 
         if (ws) {
             ws.className = "bg-[#1e1e1e] border border-neutral-800 rounded-xl p-6 text-center flex flex-col items-center justify-center gap-4 min-h-[300px]";
             ws.innerHTML = `
                 <span class="text-3xl">🔒</span>
                 <h3 class="text-sm font-bold text-amber-500 uppercase tracking-wider">Premium Workspace Challenge</h3>
-                <p class="text-xs text-neutral-400 max-w-sm leading-relaxed">Challenges 11-40 require structured revision access. Unlock the entire premium sandbox library instantly below.</p>
+                <p class="text-xs text-neutral-400 max-w-sm leading-relaxed">Challenges ${FREE_CHALLENGE_LIMIT + 1}-40 require structured revision access. Unlock the entire premium sandbox library instantly below.</p>
                 <div id="paypal-button-container" class="w-full max-w-xs mt-2"></div>
             `;
             renderPaypalCheckout();
@@ -119,8 +138,19 @@ function initWorkspace() {
         document.getElementById('parsons-bin-deck-wrapper')?.remove();
         
         ws.innerHTML = '';
-        ws.className = "bg-[#1e1e1e] border border-neutral-800 rounded-xl p-4 min-h-[180px] flex flex-col gap-2 shadow-inner drop-zone-tray";
+        ws.className = "bg-[#1e1e1e] border border-neutral-800 rounded-xl p-4 min-h-[180px] flex flex-col gap-2 shadow-inner drop-zone-tray relative justify-center";
         ws.setAttribute("data-tray-type", "solution");
+
+        // Inject the Drag and Drop Directional Onboarding Card
+        const placeholder = document.createElement('div');
+        placeholder.id = "workspace-placeholder";
+        placeholder.className = "flex flex-col items-center justify-center border-2 border-dashed border-neutral-800/70 bg-neutral-900/20 rounded-lg p-6 text-center pointer-events-none select-none my-auto transition-all duration-150";
+        placeholder.innerHTML = `
+            <span class="text-xl mb-1.5 opacity-70">📥</span>
+            <p class="text-[11px] font-bold text-neutral-400 uppercase tracking-wide">Workspace Solution Area</p>
+            <p class="text-[11px] text-neutral-500 mt-1 max-w-xs leading-relaxed">Drag code blocks up from the pool below into this workspace, then organize their sequence and indentation depth.</p>
+        `;
+        ws.appendChild(placeholder);
 
         // DYNAMIC INVENTORY CONTAINER DECK ASSEMBLY
         const binDeckWrapper = document.createElement('div');
@@ -128,8 +158,8 @@ function initWorkspace() {
         binDeckWrapper.className = "mt-4";
         binDeckWrapper.innerHTML = `
             <div class="bg-[#212121] border border-neutral-800 rounded-t-xl px-4 py-2.5 flex justify-between items-center shadow-sm">
-                <span class="text-[10px] text-neutral-400 font-bold uppercase tracking-wider flex items-center gap-1.5">🗑️ Distractor Deck & Inventory Pool</span>
-                <span class="text-[10px] text-neutral-500 font-mono">Leave incorrect blocks here</span>
+                <span class="text-[10px] text-neutral-400 font-bold uppercase tracking-wider flex items-center gap-1.5">📋 Code Blocks & Distractor Inventory Pool</span>
+                <span class="text-[10px] text-neutral-500 font-mono">Drag blocks from here</span>
             </div>
             <div id="parsons-bin-deck" class="bg-[#1a1a1a] border-x border-b border-neutral-800 rounded-b-xl p-4 min-h-[120px] flex flex-col gap-2 shadow-inner drop-zone-tray" data-tray-type="pool"></div>
         `;
@@ -143,6 +173,7 @@ function initWorkspace() {
         
         setupDragAndDropContext(ws); 
         setupDragAndDropContext(binDeck);
+        updatePlaceholderVisibility();
     }
 }
 
@@ -194,6 +225,7 @@ function setupDragAndDropContext(container) {
         } else {
             playNudgeSound(); 
         }
+        updatePlaceholderVisibility();
         activeDraggedElement = null; 
     }); 
     container.addEventListener('dragover', (e) => { 
@@ -212,6 +244,7 @@ function setupDragAndDropContext(container) {
         } else if (!targetRow) {
             container.appendChild(activeDraggedElement);
         }
+        updatePlaceholderVisibility();
     }); 
 }
 
@@ -263,6 +296,7 @@ function setupTouchContext(rowElement) {
                 targetTrayContainer.appendChild(activeTouchElement);
             }
         }
+        updatePlaceholderVisibility();
     }, { passive: false });
 
     rowElement.addEventListener('touchend', () => {
@@ -280,6 +314,7 @@ function setupTouchContext(rowElement) {
         } else {
             playNudgeSound();
         }
+        updatePlaceholderVisibility();
         activeTouchElement = null;
     });
 }
@@ -291,7 +326,8 @@ function checkAnswer() {
     const workspace = document.getElementById('parsons-workspace');
     if (!workspace) return;
     
-    const rows = Array.from(workspace.children); 
+    // Explicitly scan only elements matching the row block structural template class
+    const rows = Array.from(workspace.querySelectorAll('.parsons-row-container')); 
     let isPerfect = true; 
     
     if (rows.length !== challengeData.correctOrder.length) {
